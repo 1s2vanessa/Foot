@@ -17,7 +17,7 @@ public class Foot {
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
        MaFenetre fen = new MaFenetre();
-       fen.setVisible(true);
+       
     }
       
     
