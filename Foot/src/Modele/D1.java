@@ -193,18 +193,18 @@ public class D1 implements fight{
                 
             }
         }
-        try {
-            finD1();
-            //System.err.println(r.finSaison("d1", pays));
-            // r.envoiEuropa(e2);
-            // echangeD1D2();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(D1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(D1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(D1.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            finD1();
+//            //System.err.println(r.finSaison("d1", pays));
+//            // r.envoiEuropa(e2);
+//            // echangeD1D2();
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(D1.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            Logger.getLogger(D1.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            Logger.getLogger(D1.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     

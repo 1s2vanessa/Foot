@@ -21,6 +21,14 @@ public class CoupeLigue implements fight {
         r = new Requetes();
         this.d1 = d1;
         this.d2 = d2;
+
+        for (int i = 0; i < d1.getDivision1().size(); i++) {
+            d1.getDivision1().get(i).setClassement(r.classementCoupeByName(d1.getDivision1().get(i).getNom(), "d1"));
+        }
+
+        for (int i = 0; i < d2.getDivision2().size(); i++) {
+            d2.getDivision2().get(i).setClassement(r.classementCoupeByName(d2.getDivision2().get(i).getNom(), "d2"));
+        }
         gagnant = new ArrayList<>();
         liste = new ArrayList<>();
         perdant = new ArrayList<>();
@@ -39,8 +47,18 @@ public class CoupeLigue implements fight {
         //       match(liste);
     }
 
-    public void match(ArrayList<Equipe> list) throws SQLException {
-       // int test=0;
+    public void match(ArrayList<Equipe> list, int test) throws SQLException {
+
+        System.out.println();
+        if (test != 1) {
+            System.out.println("******* 1/" + test + " de finale ********");
+        } else {
+            System.out.println("******** FINALE ********");
+        }
+        System.out.println();
+
+        test = test / 2;
+
         if (list.size() < 3) {
             System.out.println("Le gagnant est= " + list.get(0).getNom());
             JOptionPane jop1;
@@ -48,33 +66,29 @@ public class CoupeLigue implements fight {
             jop1.showMessageDialog(null, "Le gagnant de la coupe de la Ligue est : " + list.get(0).getNom(), "Message", JOptionPane.INFORMATION_MESSAGE);
 
             //return list.get(0).getNom();
-
         } else {
             for (int i = 0; i < list.size() / 2; i++) {
                 int j = (int) (Math.random() * list.size());
                 int h = (int) (Math.random() * list.size());
 
-                if (j != h && list.get(j) != list.get(h)){
+                if (j != h && list.get(j) != list.get(h)) {
                     //if(!list.get(j).getDeja_joue().contains(list.get(h))){
-                   //      test++;
-                   // }
+                    //      test++;
+                    // }
                     System.out.println("j= " + j + " h= " + h);
                     fight(list.get(j), list.get(h));
                     System.out.println();
                     affichage();
                 } else {
                   //  if (test>10){
-                         
-                   //     break;
-                   // }
-                     i--;
-                  
+
+                    //     break;
+                    // }
+                    i--;
+
                 }
             }
 
-            System.out.println();
-            System.out.println("Série finie");
-            System.out.println();
             ArrayList<Equipe> gagnant1 = new ArrayList<>();
             for (int i = 0; i < gagnant.size(); i++) {
                 //Equipe e = gagnant.get(i);
@@ -82,9 +96,9 @@ public class CoupeLigue implements fight {
             }
 
             gagnant.removeAll(gagnant);
-            match(gagnant1);
+            match(gagnant1, test);
         }
-      //  return null;
+        //  return null;
     }
 
     public void affichage() {
@@ -113,6 +127,17 @@ public class CoupeLigue implements fight {
             if (e1.getDeja_joue().contains(e2)) {
                 System.out.println("Equipe déjà affrontée");
                 gagnant = -1;
+                if (getGagnant().size() < 3) {
+                    if (e1.getPts() > e2.getPts()) {
+                        getGagnant().add(e1);
+                        getPerdant().add(e2);
+                    } else {
+                        getGagnant().add(e2);
+                        getPerdant().add(e1);
+                    }
+                    getListe().remove(e1);
+                    getListe().remove(e2);
+                }
             }
 
             if (gagnant != -1) {
@@ -136,10 +161,10 @@ public class CoupeLigue implements fight {
                     System.err.println("Gagnante : " + e1.getNom());
                     System.err.println("Perdante : " + e2.getNom());
 
-                    if (!getGagnant().contains(e1)){
+                    if (!getGagnant().contains(e1)) {
                         getGagnant().add(e1);
                     }
-                    
+
                     getPerdant().add(e2);
                     getListe().remove(e1);
                     getListe().remove(e2);
@@ -182,7 +207,7 @@ public class CoupeLigue implements fight {
 
                     System.err.println("Gagnante : " + e2.getNom());
                     System.err.println("Perdante : " + e1.getNom());
-                  if (!getGagnant().contains(e2)){
+                    if (!getGagnant().contains(e2)) {
                         getGagnant().add(e2);
                     }
                     getPerdant().add(e1);
@@ -190,16 +215,16 @@ public class CoupeLigue implements fight {
                     getListe().remove(e2);
                 }
 
-                System.err.println(e1.toString());
-                System.err.println(e2.toString());
+                // System.err.println(e1.toString());
+                //   System.err.println(e2.toString());
                 // MAJ BD pour le classement
                 r.MAJBd(e1, e1.getType());
                 r.MAJBd(e2, e2.getType());
                 e1.getDeja_joue().add(e2);
                 e2.getDeja_joue().add(e1);
 
-                ArrayList<Equipe> tmpd1 = r.Classement(e1.getPays(), e1.getType());
-                ArrayList<Equipe> tmpd2 = r.Classement(e2.getPays(), e2.getType());
+                ArrayList<Equipe> tmpd1 = r.ClassementCoupe(e1.getPays());
+                ArrayList<Equipe> tmpd2 = r.ClassementCoupe(e2.getPays());
                 //   division1.clear();
                 //     division1.addAll(tmp);
 //                for (int j = 0; j < tmp.size(); j++) {

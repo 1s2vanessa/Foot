@@ -6,12 +6,11 @@
 
 package foot;
 
+import Vue.MaFenetre;
+import java.sql.SQLException;
 import Modele.D1;
 import Modele.D2;
 import Modele.LdC;
-import Vue.MaFenetre;
-import java.sql.SQLException;
-
 /**
  *
  * @author Vanessa
@@ -19,12 +18,12 @@ import java.sql.SQLException;
 public class Foot {
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-//       MaFenetre fen = new MaFenetre();
-//       fen.setVisible(true);
-   
-     D1 div1= new D1();
+       MaFenetre fen = new MaFenetre();
+       fen.setVisible(true);
+       
+        D1 div1= new D1();
        D2 div2 = new D2();
-      LdC lea=new LdC(div1.getDivision1(),div1.getDivision1());
+       LdC lea=new LdC(div1.getDivision1(),div1.getDivision1());
       
       lea.melange_array(div1.getDivision1());
       lea.faire_8_groupes_de_4();
@@ -36,8 +35,6 @@ public class Foot {
         System.out.println();
         System.out.println();
       }
-    
-    
     }
       
     
