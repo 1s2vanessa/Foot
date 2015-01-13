@@ -3,14 +3,12 @@ package Modele;
 import Vue.Observateur;
 import java.util.ArrayList;
 
-/**
- *
- * @author Vanessa
- */
 public class Equipe implements Observable {
 
     private String nom;
-    private int classement;
+    private int classement, classementCoupe;
+
+    
     private String type, Pays;
     private int Pts, J, G, N, P, BP, BC, Diff;
     private ArrayList<Equipe> deja_joue;
@@ -154,6 +152,15 @@ public class Equipe implements Observable {
         this.type = type;
     }
 
+    public int getClassementCoupe() {
+        return classementCoupe;
+    }
+
+    public void setClassementCoupe(int classementCoupe) {
+        this.classementCoupe = classementCoupe;
+    }
+
+  
     @Override
     public String toString() {
         return ("Equipe : " + nom + " " + classement + " " + Pts + " " + J + " " + G + " " + N + " " + P + " " + BP + " " + BC + " " + Diff);

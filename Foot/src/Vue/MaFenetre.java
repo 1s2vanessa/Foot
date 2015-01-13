@@ -8,12 +8,14 @@ package Vue;
 import Modele.CoupeLigue;
 import Modele.D1;
 import Modele.D2;
+import Modele.Equipe;
 import Modele.MonModelTable;
 import Modele.Requetes;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -29,7 +31,7 @@ import javax.swing.JOptionPane;
  */
 public final class MaFenetre extends JFrame implements ActionListener {
 
-    private Tableau_Score tableauScoreD1, tableauScoreD2;
+    private Tableau_Score tableauScoreD1, tableauScoreD2, ligue, tableauScore;
     static int dejacree = 0;
     private JMenuItem nouvelleSaison, d1Fr, d2Fr, d2Ang, d1Ang;
     private JMenuBar barreMenu;
@@ -53,7 +55,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
     }
 
     public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-
+        RAZtout();
         //menu
         barreMenu = new JMenuBar();
         menu1 = new JMenu("Menu");
@@ -71,11 +73,13 @@ public final class MaFenetre extends JFrame implements ActionListener {
         this.setJMenuBar(barreMenu);
 
         //  nouvelleSaison.addActionListener(this);
-        tableauScoreD1 = new Tableau_Score();
-        tableauScoreD2 = new Tableau_Score();
-
-        mmt.addObs(tableauScoreD1);
-        mmt.addObs(tableauScoreD2);
+        tableauScore = new Tableau_Score();
+        //// tableauScoreD1 = new Tableau_Score();
+        //   tableauScoreD2 = new Tableau_Score();
+        //     ligue= new Tableau_Score();
+        mmt.addObs(tableauScore);
+        //   mmt.addObs(tableauScoreD1);
+        // mmt.addObs(tableauScoreD2);
 
         equipe = new Panno_Equipe("", "");
         choix = new Panno_Choix();
@@ -169,17 +173,15 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
         System.err.println("coupe ligue");
         CoupeLigue coupeLigue = new CoupeLigue(div1Coupe, div2Coupe);
-        coupeLigue.match(coupeLigue.getListe());
-        //   System.err.println(equipeGagnante);
-//        JOptionPane jop1;
-//        jop1 = new JOptionPane();
-//       jop1.showMessageDialog(null, "Le gagnant de la coupe de la Ligue est : " + equipeGagnante, "Message", JOptionPane.INFORMATION_MESSAGE);
+        coupeLigue.match(coupeLigue.getListe(), 8);
 
+        affichage_tableau();
     }
 
     public void panoEquipe() {
-        this.remove(tableauScoreD1);
-        this.remove(tableauScoreD2);
+        //this.remove(tableauScoreD1);
+        //this.remove(tableauScoreD2);
+        this.remove(tableauScore);
         this.remove(equipe);
         try {
 
@@ -199,72 +201,136 @@ public final class MaFenetre extends JFrame implements ActionListener {
         }
 
         //On supprime les données des tableaux
-        ((MonModelTable) tableauScoreD1.getTable().getModel()).removeAll();
-        ((MonModelTable) tableauScoreD2.getTable().getModel()).removeAll();
+        //   ((MonModelTable) tableauScoreD1.getTable().getModel()).removeAll();
+        ((MonModelTable) tableauScore.getTable().getModel()).removeAll();
 
         //On modifie les données des tableaux et on les ré-affiche
         if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
             for (int i = 0; i < equipe.getDivision1().getDivision1().size(); i++) {
-                ((MonModelTable) tableauScoreD1.getTable().getModel()).addLigne(equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
+                ((MonModelTable) tableauScore.getTable().getModel()).addLigne(equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
             }
-            add(tableauScoreD1, BorderLayout.SOUTH);
+            //  add(tableauScoreD1, BorderLayout.SOUTH);
 
         } else if (choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
             for (int i = 0; i < equipe.getDivision2().getDivision2().size(); i++) {
-                ((MonModelTable) tableauScoreD2.getTable().getModel()).addLigne(equipe.getDivision2().getDivision2().get(i).getNom(), Integer.toString(equipe.getDivision2().getDivision2().get(i).getClassement()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getPts()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getJ()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getG()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getN()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBC()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getDiff()));
+                ((MonModelTable) tableauScore.getTable().getModel()).addLigne(equipe.getDivision2().getDivision2().get(i).getNom(), Integer.toString(equipe.getDivision2().getDivision2().get(i).getClassement()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getPts()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getJ()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getG()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getN()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBC()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getDiff()));
             }
-            add(tableauScoreD2, BorderLayout.SOUTH);
+
         }
+        add(tableauScore, BorderLayout.SOUTH);
         pack();
     }
 
     public void affichage_tableau() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        this.remove(tableauScoreD1);
-        this.remove(tableauScoreD2);
+        //this.remove(tableauScoreD1);
+        //this.remove(tableauScoreD2);
 
-        //Si D1 choisit alors fight entre les équipes de la D1
-        if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
+        this.remove(tableauScore);
+        pack();
 
-            System.err.println("E1 : " + (String) equipe.getEquipe1().getSelectedItem());
+        switch ((String) choix.getChoixChampionnat().getSelectedItem()) {
+            case "D1":   //Si D1 choisit alors fight entre les équipes de la D1
+                if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
+                    System.err.println("E1 : " + (String) equipe.getEquipe1().getSelectedItem());
+                    System.err.println("E2 : " + (String) equipe.getEquipe2().getSelectedItem());
 
-            System.err.println("E2 : " + (String) equipe.getEquipe2().getSelectedItem());
-            if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
-                // equipe.getDivision1().fight(r.getEquipeByName((String) equipe.getEquipe1().getSelectedItem(),"d1"), r.getEquipeByName((String) equipe.getEquipe2().getSelectedItem(),"d1"));
+                    equipe.getDivision1().fight(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision1().getDivision1().get(equipe.getEquipe2().getSelectedIndex() - 1));
+                }
+                //MAJ des données des tableaux suite au fight
+                for (int i = 0; i < equipe.getDivision1().getDivision1().size(); i++) {
+                    ((MonModelTable) tableauScore.getTable().getModel()).setLigne(i, equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
+                }
+                //MAJ de l'affichage du tableau
+                tableauScore.Update();
+                add(tableauScore, BorderLayout.SOUTH);
 
-                equipe.getDivision1().fight(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision1().getDivision1().get(equipe.getEquipe2().getSelectedIndex() - 1));
-                //MAJ de l'arrayList des equipes suite au classement de la BD
-//                ArrayList<Equipe> tmp = r.Classement(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1).getPays(), "d1");
-//                equipe.getDivision1().getDivision1().clear();
-//                equipe.getDivision1().getDivision1().addAll(tmp);
-//                equipe.Update();
+                break;
 
-            }
+            case "D2":
+                if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
+                    equipe.getDivision2().fight(equipe.getDivision2().getDivision2().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision2().getDivision2().get(equipe.getEquipe2().getSelectedIndex() - 1));
+                }
+                //MAJ des données des tableaux suite au fight
+                for (int i = 0; i < equipe.getDivision2().getDivision2().size(); i++) {
+                    ((MonModelTable) tableauScore.getTable().getModel()).setLigne(i, equipe.getDivision2().getDivision2().get(i).getNom(), Integer.toString(equipe.getDivision2().getDivision2().get(i).getClassement()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getPts()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getJ()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getG()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getN()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBC()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getDiff()));
+                }
+                tableauScore.Update();
+                add(tableauScore, BorderLayout.SOUTH);
 
-            //MAJ des données des tableaux suite au fight
-            for (int i = 0; i < equipe.getDivision1().getDivision1().size(); i++) {
-                ((MonModelTable) tableauScoreD1.getTable().getModel()).setLigne(i, equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
-            }
-            //MAJ de l'affichage du tableau
-            tableauScoreD1.Update();
-            add(tableauScoreD1, BorderLayout.SOUTH);
+                break;
 
-        } else if (choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
-            if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
-                equipe.getDivision2().fight(equipe.getDivision2().getDivision2().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision2().getDivision2().get(equipe.getEquipe2().getSelectedIndex() - 1));
+            case "Coupe de la Ligue":
+                ArrayList<Equipe> tmp = new ArrayList<>();
+                ((MonModelTable) tableauScore.getTable().getModel()).removeAll();
 
-                //MAJ de l'arrayList des equipes suite au classement de la BD
-//                ArrayList<Equipe> tmp = r.Classement(equipe.getDivision2().getDivision2().get(equipe.getEquipe1().getSelectedIndex() - 1).getPays(), "d2");
-//                equipe.getDivision2().getDivision2().clear();
-//                equipe.getDivision2().getDivision2().addAll(tmp);
-            }
+                for (int i = 0; i < div1Coupe.getDivision1().size(); i++) {
+                    tmp.add(div1Coupe.getDivision1().get(i));
+                }
+                for (int j = 0; j < div2Coupe.getDivision2().size(); j++) {
+                    tmp.add(div2Coupe.getDivision2().get(j));
+                }
 
-            //MAJ des données des tableaux suite au fight
-            for (int i = 0; i < equipe.getDivision2().getDivision2().size(); i++) {
-                ((MonModelTable) tableauScoreD2.getTable().getModel()).setLigne(i, equipe.getDivision2().getDivision2().get(i).getNom(), Integer.toString(equipe.getDivision2().getDivision2().get(i).getClassement()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getPts()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getJ()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getG()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getN()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBC()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getDiff()));
-            }
-            tableauScoreD2.Update();
-            add(tableauScoreD2, BorderLayout.SOUTH);
+                for (int i = 0; i < tmp.size(); i++) {
+                    ((MonModelTable) tableauScore.getTable().getModel()).addLigne(tmp.get(i).getNom(), Integer.toString(r.classementCoupeByName(tmp.get(i).getNom(), tmp.get(i).getType())), Integer.toString(tmp.get(i).getPts()), Integer.toString(tmp.get(i).getJ()), Integer.toString(tmp.get(i).getG()), Integer.toString(tmp.get(i).getN()), Integer.toString(tmp.get(i).getP()), Integer.toString(tmp.get(i).getBP()), Integer.toString(tmp.get(i).getBC()), Integer.toString(tmp.get(i).getDiff()));
+                }
+
+                add(tableauScore, BorderLayout.SOUTH);
+                break;
+
+            case "Coupe Nationale":
+                break;
+
+            case "Europa League":
+                break;
+
+            case "Champions League":
+                break;
+
         }
+        /*
+         if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
+
+         System.err.println("E1 : " + (String) equipe.getEquipe1().getSelectedItem());
+
+         System.err.println("E2 : " + (String) equipe.getEquipe2().getSelectedItem());
+         if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
+         // equipe.getDivision1().fight(r.getEquipeByName((String) equipe.getEquipe1().getSelectedItem(),"d1"), r.getEquipeByName((String) equipe.getEquipe2().getSelectedItem(),"d1"));
+
+         equipe.getDivision1().fight(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision1().getDivision1().get(equipe.getEquipe2().getSelectedIndex() - 1));
+         //MAJ de l'arrayList des equipes suite au classement de la BD
+         //                ArrayList<Equipe> tmp = r.Classement(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1).getPays(), "d1");
+         //                equipe.getDivision1().getDivision1().clear();
+         //                equipe.getDivision1().getDivision1().addAll(tmp);
+         //                equipe.Update();
+
+         }
+
+         //MAJ des données des tableaux suite au fight
+         for (int i = 0; i < equipe.getDivision1().getDivision1().size(); i++) {
+         ((MonModelTable) tableauScoreD1.getTable().getModel()).setLigne(i, equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
+         }
+         //MAJ de l'affichage du tableau
+         tableauScoreD1.Update();
+         add(tableauScoreD1, BorderLayout.SOUTH);
+
+         } else if (choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
+         if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
+         equipe.getDivision2().fight(equipe.getDivision2().getDivision2().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision2().getDivision2().get(equipe.getEquipe2().getSelectedIndex() - 1));
+
+         //MAJ de l'arrayList des equipes suite au classement de la BD
+         //                ArrayList<Equipe> tmp = r.Classement(equipe.getDivision2().getDivision2().get(equipe.getEquipe1().getSelectedIndex() - 1).getPays(), "d2");
+         //                equipe.getDivision2().getDivision2().clear();
+         //                equipe.getDivision2().getDivision2().addAll(tmp);
+         }
+
+         //MAJ des données des tableaux suite au fight
+         for (int i = 0; i < equipe.getDivision2().getDivision2().size(); i++) {
+         ((MonModelTable) tableauScoreD2.getTable().getModel()).setLigne(i, equipe.getDivision2().getDivision2().get(i).getNom(), Integer.toString(equipe.getDivision2().getDivision2().get(i).getClassement()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getPts()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getJ()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getG()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getN()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBC()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getDiff()));
+         }
+         tableauScoreD2.Update();
+         add(tableauScoreD2, BorderLayout.SOUTH);
+         }
+         */
 
         pack();
     }
@@ -273,12 +339,14 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
         try {
             r.RAZbase(championnat, pays);
+
         } catch (SQLException ex) {
-            Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaFenetre.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         this.remove(equipe);
-        this.remove(tableauScoreD1);
-        this.remove(tableauScoreD2);
+        // this.remove(tableauScoreD1);
+        this.remove(tableauScore);
         pack();
 
     }
@@ -286,8 +354,10 @@ public final class MaFenetre extends JFrame implements ActionListener {
     public void RAZtout() {
         try {
             r.RAZTotale();
+
         } catch (SQLException ex) {
-            Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaFenetre.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

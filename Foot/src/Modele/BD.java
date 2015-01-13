@@ -6,10 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author Vanessa
- */
+
 public class BD{
     public Statement link;
     public Connection c;

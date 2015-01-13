@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Vue;
 
 import Modele.MonModelTable;
@@ -18,19 +12,21 @@ import javax.swing.border.TitledBorder;
  *
  * @author Vanessa
  */
-public class Tableau_Score extends JPanel implements Observateur{
+public class Tableau_Score extends JPanel implements Observateur {
+
     private JTable table;
     private MonModelTable model;
-    
-    public Tableau_Score(){
+
+    public Tableau_Score() {
         this.setBorder(new TitledBorder("Résultat"));
         this.setSize(new Dimension(400, 100));
-        model=new MonModelTable();
-       table= new JTable(model);
-       init();
+        model = new MonModelTable();
+        table = new JTable(model);
+        init();
     }
-    public void init(){
-       // model.removeAll();
+
+    public void init() {
+        // model.removeAll();
         JScrollPane scroll = new JScrollPane(table);
         scroll.setPreferredSize(new Dimension(590, 400));
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -47,8 +43,7 @@ public class Tableau_Score extends JPanel implements Observateur{
         init();
         validate();
         revalidate();
-    
+
     }
-    
-    
+
 }
