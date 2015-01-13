@@ -7,6 +7,7 @@
 package Modele;
 
 import Modele.Equipe;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -16,7 +17,7 @@ import java.util.Collections;
  */
 
 // Celui qui dépasse d'une huitre, te dépassse d'une ruise" 
-public class LdC {
+public abstract class LdC implements fight{
     private ArrayList<Equipe> liste_LDC ;
     private ArrayList<Equipe> groupe1 ;
     private ArrayList<Equipe> groupe2 ;
@@ -30,7 +31,7 @@ public class LdC {
     private ArrayList<Equipe> groupe10 ;
     private ArrayList<Equipe> groupe11;
     private ArrayList<Equipe> groupe12;
-    
+    private Requetes r;
 //
 //    public LdC(ArrayList<Equipe> liste_D1, ArrayList<Equipe> liste_D2 ) 
 //    {
@@ -56,7 +57,7 @@ public class LdC {
 //   
     
     
-    public LdC(ArrayList<Equipe> liste_D1, ArrayList<Equipe> liste_D2 ) // Les deux array list sont de 16 equipes normalement 
+    public LdC(ArrayList<Equipe> liste_D1, ArrayList<Equipe> liste_D2 ) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException // Les deux array list sont de 16 equipes normalement 
     {   
         liste_LDC=new ArrayList<>();
         groupe1= new ArrayList<>();
@@ -67,6 +68,8 @@ public class LdC {
         groupe6= new ArrayList<>();
         groupe7= new ArrayList<>();
         groupe8= new ArrayList<>();
+        r = new Requetes();
+            
         
         for (int i=0;i<liste_D1.size();i++) // à tester
         {
@@ -297,36 +300,157 @@ public class LdC {
     
    public void melange_array(ArrayList<Equipe> a) 
     {
-        //int nombre_equipes=a.size();
         ArrayList<Equipe> tmp = new ArrayList<>();
-        
         int random=0;
-        int tableau[]= new int[a.size()];
-        ArrayList l = new ArrayList();
-        for (int i = 1; i < 31; i++)
-        l.add(i);
-        Collections.shuffle(l); 
-        
-          for (int i=0;i<l.size();i++)
+        int tableau[]= new int[a.size()]; // Je crée un tableau d'entiers 
+        ArrayList l = new ArrayList(); 
+        for (int i = 0; i < a.size(); i++)
         {
-           tableau[i]=(int)l.get(i);
+            l.add(i);    
         }
+        Collections.shuffle(l); // Mélange la liste d'entiers comprise dans l.
+        
+//          for (int i=0;i<l.size();i++)
+//        {
+//           tableau[i]=(int)l.get(i);  // J'ajoute les nombres mélangés dans le tableau d'entier ( plus lisible pour la suite)
+//        }
         
         
         for (int i=0;i<l.size();i++)
         {
-            tmp.add(a.get((int)l.get(i)));
+            tmp.add(a.get((int)l.get(i))); // J'ajoute l'équipe qui correspond au nombre dans la case du tableau corréspondante
          
         }
-         for (int i=0;i<l.size();i++)
+//         for (int i=0;i<l.size();i++)
+//        {
+//            tmp.add(a.get(tableau[i]));
+//           
+//        }
+         
+         a=tmp;
+         
+           for (int i=0;i<l.size();i++)
         {
-           System.out.println(tmp.get(i).getNom());
+           System.out.println(a.get(i).getNom());
+           
         }
+        
+         
     } 
     
-}
+
+
+@Override
+    public void fight(Equipe e1, Equipe e2) throws SQLException {
+
+      double gagnant = Math.random();
+        int nbButMarque = (int) (Math.random() * 100) % 5;
+        if (nbButMarque == 0) {
+            nbButMarque = 1;
+        }
+        int nbButEcaisse = (int) (Math.random() * 100) % 5;
+        if (nbButEcaisse >= nbButMarque) {
+            nbButEcaisse = nbButMarque - 1;
+        }
+
+        if (e1 == e2) {
+            System.out.println("Erreur même equipe");
+
+        } else if (e1 != e2) {
+            if (e1.getDeja_joue().contains(e2)) {
+                System.out.println("Equipe déjà affrontée");
+                gagnant = -1;
+            }
+            
+            if (gagnant != -1) {
+                if (gagnant > -1 && gagnant < 0.5) {
+                    //Equipe gagnante
+                    e1.setJ(e1.getJ() + 1);
+                    e1.setG(e1.getG() + 1);
+                    e1.setPts(e1.getPts() + 3);
+                    e1.setBP(e1.getBP() + nbButMarque);
+                    e1.setBC(e1.getBC() + nbButEcaisse);
+                    e1.setDiff(e1.getBP() - e1.getBC());
+
+                    //Equipe perdante
+                    e2.setJ(e2.getJ() + 1);
+                    e2.setP(e2.getP() + 1);
+                    e2.setPts(e2.getPts() - 1);
+                    e2.setBP(e2.getBP() + nbButEcaisse);
+                    e2.setBC(e2.getBC() + nbButMarque);
+                    e2.setDiff(e2.getBP() - e2.getBC());
+
+                    System.err.println("Gagnante : " + e1.getNom());
+                } else if (gagnant == 0.5) {
+                    nbButEcaisse = nbButMarque;
+
+                    //Equipe 2
+                    e2.setJ(e2.getJ() + 1);
+                    e2.setN(e2.getN() + 1);
+                    e2.setPts(e2.getPts() + 1);
+                    e2.setBP(e2.getBP() + nbButMarque);
+                    e2.setBC(e2.getBC() + nbButEcaisse);
+                    e2.setDiff(e2.getBP() - e2.getBC());
+
+                    //Equipe 1
+                    e1.setJ(e1.getJ() + 1);
+                    e1.setP(e1.getP() + 1);
+                    e1.setPts(e1.getPts() + 1);
+                    e1.setBP(e1.getBP() + nbButEcaisse);
+                    e1.setBC(e1.getBC() + nbButMarque);
+                    e1.setDiff(e1.getBP() - e1.getBC());
+
+                    System.err.println("Match Nul");
+                } else {
+                    //Equipe gagnante
+                    e2.setJ(e2.getJ() + 1);
+                    e2.setG(e2.getG() + 1);
+                    e2.setPts(e2.getPts() + 3);
+                    e2.setBP(e2.getBP() + nbButMarque);
+                    e2.setBC(e2.getBC() + nbButEcaisse);
+                    e2.setDiff(e2.getBP() - e2.getBC());
+
+                    //Equipe perdante
+                    e1.setJ(e1.getJ() + 1);
+                    e1.setP(e1.getP() + 1);
+                    e1.setPts(e1.getPts() - 1);
+                    e1.setBP(e1.getBP() + nbButEcaisse);
+                    e1.setBC(e1.getBC() + nbButMarque);
+                    e1.setDiff(e1.getBP() - e1.getBC());
+
+                    System.err.println("Gagnante : " + e2.getNom());
+                }
+            r.MAJBd(e1, "champions league");
+            r.MAJBd(e2, "champions league");
+            e1.getDeja_joue().add(e2);
+            e2.getDeja_joue().add(e1);
+
+              
+
+          ArrayList<Equipe> tmp =  r.Classement(e1.getPays(), "champions league");
+         //   division2.clear();
+             //     division2.addAll(tmp);
+                for (int j = 0; j < tmp.size(); j++) {
+                    for (int i = 0; i < this.liste_LDC.size(); i++) {
+                        if (this.liste_LDC.get(i).getNom().equals(tmp.get(j).getNom())) {
+                            this.liste_LDC.get(i).setClassement(tmp.get(j).getClassement());
+                        }
+
+//                    if (division2.contains(e1)) {
+//                        division2.get(i).setDeja_joue(e1.getDeja_joue());
+//                    } else if (division2.get(i).getNom().equals(e2.getNom())) {
+//                        division2.get(i).setDeja_joue(e2.getDeja_joue());
+//                    }
+                    }
+                }
+                
+            }
+        }
+         // r.envoiEuropa(e2);
+       // echangeD1D2();
+    }
       
-    
+    }
 
         
        
