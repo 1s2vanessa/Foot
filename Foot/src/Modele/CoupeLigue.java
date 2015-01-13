@@ -1,11 +1,7 @@
 package Modele;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.time;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class CoupeLigue implements fight {

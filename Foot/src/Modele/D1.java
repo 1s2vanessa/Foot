@@ -3,23 +3,23 @@ package Modele;
 import Vue.Observateur;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Vanessa
  */
-public class D1 implements fight{
+public class D1 implements fight {
 
     private ArrayList<Equipe> division1;
     private String pays;
     private Requetes r;
     private ArrayList<Observateur> observateur;
     private Equipe barrage1, barrage2;
+    private ArrayList<Equipe> echange= new ArrayList<Equipe>();
 
     public D1() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-          //  data= new BD();
+        //  data= new BD();
         division1 = new ArrayList<>();
         r = new Requetes();
 
@@ -27,7 +27,7 @@ public class D1 implements fight{
         observateur = new ArrayList<>();
         System.out.println(division1.size());
     }
-    
+
     public D1(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         this.pays = pays;
         //  data= new BD();
@@ -39,39 +39,39 @@ public class D1 implements fight{
         System.out.println(division1.size());
     }
 
-      public Equipe Barrage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+    public Equipe Barrage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
 
-        for(int i=0;i<division1.size();i++){
-            if(division1.get(i).getPays().equals("France") && division1.get(i).getClassement()==3){
-                barrage1 = new Equipe(division1.get(i).getClassement(),division1.get(i).getNom(),division1.get(i).getPts(),division1.get(i).getJ(),division1.get(i).getG(),division1.get(i).getN(),division1.get(i).getP(),division1.get(i).getBP(),division1.get(i).getBC(),division1.get(i).getDiff(),division1.get(i).getPays(),division1.get(i).getType());
-               
+        for (int i = 0; i < division1.size(); i++) {
+            if (division1.get(i).getPays().equals("France") && division1.get(i).getClassement() == 3) {
+                barrage1 = new Equipe(division1.get(i).getClassement(), division1.get(i).getNom(), division1.get(i).getPts(), division1.get(i).getJ(), division1.get(i).getG(), division1.get(i).getN(), division1.get(i).getP(), division1.get(i).getBP(), division1.get(i).getBC(), division1.get(i).getDiff(), division1.get(i).getPays(), division1.get(i).getType());
+
             }
-            
-            if(division1.get(i).getPays().equals("Angleterre") && division1.get(i).getClassement()==4){
-                barrage2 = new Equipe(division1.get(i).getClassement(),division1.get(i).getNom(),division1.get(i).getPts(),division1.get(i).getJ(),division1.get(i).getG(),division1.get(i).getN(),division1.get(i).getP(),division1.get(i).getBP(),division1.get(i).getBC(),division1.get(i).getDiff(),division1.get(i).getPays(),division1.get(i).getType());
+
+            if (division1.get(i).getPays().equals("Angleterre") && division1.get(i).getClassement() == 4) {
+                barrage2 = new Equipe(division1.get(i).getClassement(), division1.get(i).getNom(), division1.get(i).getPts(), division1.get(i).getJ(), division1.get(i).getG(), division1.get(i).getN(), division1.get(i).getP(), division1.get(i).getBP(), division1.get(i).getBC(), division1.get(i).getDiff(), division1.get(i).getPays(), division1.get(i).getType());
             }
-            
+
         }
-            fight(barrage1,barrage2);
-            
-        if(barrage1.getBP()>barrage2.getBP()){
-            System.out.println(barrage1.getNom()+" "+barrage1.getPays());
+        fight(barrage1, barrage2);
+
+        if (barrage1.getBP() > barrage2.getBP()) {
+            System.out.println(barrage1.getNom() + " " + barrage1.getPays());
             //LDC barrage1
             //europa barrage2
             r.envoiLDC(barrage1);
             r.envoiEuropa(barrage2);
-            
+
             return barrage1;
-        }else{
-            System.out.println(barrage2.getNom()+" "+barrage2.getPays());
+        } else {
+            System.out.println(barrage2.getNom() + " " + barrage2.getPays());
             //LDC barrage2
             //europa barrage1
             r.envoiLDC(barrage2);
             r.envoiEuropa(barrage1);
             return barrage2;
-            
+
         }
-        
+
     }
 
     public void affichage() {
@@ -86,7 +86,7 @@ public class D1 implements fight{
 
     @Override
     public void fight(Equipe e1, Equipe e2) throws SQLException {
-        
+
         double gagnant = Math.random();
         int nbButMarque = (int) (Math.random() * 100) % 5;
         if (nbButMarque == 0) {
@@ -105,7 +105,7 @@ public class D1 implements fight{
                 System.out.println("Equipe déjà affrontée");
                 gagnant = -1;
             }
-            
+
             if (gagnant != -1) {
                 if (gagnant > -1 && gagnant < 0.5) {
                     //Equipe gagnante
@@ -164,7 +164,7 @@ public class D1 implements fight{
 
                     System.err.println("Gagnante : " + e2.getNom());
                 }
-                
+
                 //MAJ BD pour le classement
                 r.MAJBd(e1, "d1");
                 r.MAJBd(e2, "d1");
@@ -172,11 +172,9 @@ public class D1 implements fight{
                 e1.getDeja_joue().add(e2);
                 e2.getDeja_joue().add(e1);
 
-              
-
-          ArrayList<Equipe> tmp = r.Classement(e1.getPays(), "d1");
+                ArrayList<Equipe> tmp = r.Classement(e1.getPays(), "d1");
          //   division1.clear();
-             //     division1.addAll(tmp);
+                //     division1.addAll(tmp);
                 for (int j = 0; j < tmp.size(); j++) {
                     for (int i = 0; i < division1.size(); i++) {
                         if (division1.get(i).getNom().equals(tmp.get(j).getNom())) {
@@ -190,7 +188,7 @@ public class D1 implements fight{
 //                    }
                     }
                 }
-                
+
             }
         }
 //        try {
@@ -207,15 +205,15 @@ public class D1 implements fight{
 //        }
     }
 
-    
-    public void finD1() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
-     
-        if(r.finSaison("d1", pays)==true){
-            Equipe tmp= Barrage();
+    public void finD1() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+        if (r.finSaison("d1", pays) == true) {
+            Equipe tmp = Barrage();
             tmp.toString();
             r.switchEquipeD1D2(pays);
         }
     }
+
     public ArrayList<Equipe> getDivision1() {
         return division1;
     }
@@ -223,5 +221,22 @@ public class D1 implements fight{
     public void setDivision1(ArrayList<Equipe> division1) {
         this.division1 = division1;
     }
-   
+
+    public void match(int nbMatch) throws SQLException {
+        if (nbMatch == 19) {
+            JOptionPane jop1;
+            jop1 = new JOptionPane();
+            jop1.showMessageDialog(null, "Fin de D1 pour  : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
+
+        } else {
+            for (int i = 0; i < division1.size(); i++) {
+                if (nbMatch != i) {
+                    fight(division1.get(i), division1.get(nbMatch));
+                }
+            }
+            nbMatch++;
+            match(nbMatch);
+        }
+
+    }
 }

@@ -1,5 +1,6 @@
 package Modele;
 
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -196,19 +197,21 @@ public class Requetes {
         return lastEquipe;
     }
 
-    public void switchEquipeD1D2(String pays) throws SQLException {
+    public ArrayList<Equipe> switchEquipeD1D2(String pays) throws SQLException {
         String selectionD1 = "SELECT * FROM d1 where Pays ='" + pays + "' AND Classement > '17' ORDER BY Classement";
         ResultSet rsD1 = data.link.executeQuery(selectionD1);
         ArrayList<Equipe> lastEquipe = new ArrayList<>();
+        ArrayList<Equipe> echange = new ArrayList<>();
         int i = 1;
         int j = 0;
         while (rsD1.next()) {
             lastEquipe.add(new Equipe(i, rsD1.getString("Nom_Equipe"), rsD1.getInt("Pts"), rsD1.getInt("J"), rsD1.getInt("G"), rsD1.getInt("N"), rsD1.getInt("P"), rsD1.getInt("BP"), rsD1.getInt("BC"), rsD1.getInt("Diff"), rsD1.getString("Pays"), "d1"));
             System.err.println(lastEquipe.get(j).toString());
+
             j++;
             i++;
         }
-
+        echange.addAll(lastEquipe);
         String selectionD2 = "SELECT * FROM d2 where Pays ='" + pays + "' AND Classement < '4' ORDER BY Classement";
         ResultSet rsD2 = data.link.executeQuery(selectionD2);
         ArrayList<Equipe> firstEquipe = new ArrayList<>();
@@ -220,7 +223,7 @@ public class Requetes {
             j++;
             i++;
         }
-
+        echange.addAll(firstEquipe);
         //MAJ D1
         String majD1, majD2;
 
@@ -236,6 +239,7 @@ public class Requetes {
             data.link.executeUpdate(majD2);
 
         }
+        return echange;
     }
 
     public void envoiEuropa(Equipe e) throws SQLException {
