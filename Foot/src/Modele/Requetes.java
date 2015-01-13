@@ -117,6 +117,47 @@ public class Requetes {
         }
         return list;
     }
+    
+    
+    public ArrayList<Equipe> ClassementCoupeNationnale(String pays) throws SQLException {
+        //Pour classer les équipes
+        String cmd = "SELECT * FROM d1 where Pays ='" + pays + "' ORDER BY Pts DESC";
+        String cmd1 = "SELECT * FROM d2 where Pays ='" + pays + "' ORDER BY Pts DESC";
+        String cmd4 = "SELECT * FROM `clubs nationals` where Pays ='" + pays + "' ORDER BY Pts DESC";
+        ResultSet rs = data.link.executeQuery(cmd);
+        ArrayList<Equipe> list = new ArrayList();
+        int i = 1;
+        String cmd2, cmd3;
+        while (rs.next()) {
+            list.add(new Equipe(i, rs.getString("Nom_Equipe"), rs.getInt("Pts"), rs.getInt("J"), rs.getInt("G"), rs.getInt("N"), rs.getInt("P"), rs.getInt("BP"), rs.getInt("BC"), rs.getInt("Diff"), rs.getString("Pays"), "d1"));
+            i++;
+        }
+
+        ResultSet rs2 = data.link.executeQuery(cmd1);
+        while (rs2.next()) {
+            list.add(new Equipe(i, rs2.getString("Nom_Equipe"), rs2.getInt("Pts"), rs2.getInt("J"), rs2.getInt("G"), rs2.getInt("N"), rs2.getInt("P"), rs2.getInt("BP"), rs2.getInt("BC"), rs2.getInt("Diff"), rs2.getString("Pays"), "d2"));
+
+            i++;
+        }
+        
+         ResultSet rs3 = data.link.executeQuery(cmd4);
+        while (rs2.next()) {
+            list.add(new Equipe(i, rs3.getString("Nom_Equipe"), rs3.getInt("Pts"), rs3.getInt("J"), rs3.getInt("G"), rs3.getInt("N"), rs3.getInt("P"), rs3.getInt("BP"), rs3.getInt("BC"), rs3.getInt("Diff"), rs3.getString("Pays"), "clubs nationals"));
+
+            i++;
+        }
+
+        for (int j = 0; j < list.size(); j++) {
+            list.get(j).setClassement(j + 1);
+            //chercher dans la d1
+            cmd2 = "UPDATE `" + list.get(j).getType() + "` SET `ClassementCoupe`='" + (j + 1) + "' WHERE Nom_Equipe ='" + list.get(j).getNom() + "'";
+            data.link.executeUpdate(cmd2);
+            //chercher dans la d2
+
+        }
+        return list;
+    }
+    
 
     public int classementCoupeByName(String nom, String Championnat) throws SQLException {
         String cmd = "SELECT `ClassementCoupe` FROM " + Championnat + " where Nom_Equipe ='" + nom + "'";
