@@ -45,6 +45,7 @@ public class Panno_Choix extends JPanel {
         choixChampionnat.addItem("D1");
         choixChampionnat.addItem("D2");
         choixChampionnat.addItem("Coupe de la Ligue");
+        choixChampionnat.addItem("Coupe Nationnale");
         
         this.setLayout(new GridBagLayout());
         //création des contraintes de placement

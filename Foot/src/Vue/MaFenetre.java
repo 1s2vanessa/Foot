@@ -5,7 +5,9 @@
  */
 package Vue;
 
+import Modele.ClubNationnal;
 import Modele.CoupeLigue;
+import Modele.CoupeNationnale;
 import Modele.D1;
 import Modele.D2;
 import Modele.Equipe;
@@ -46,6 +48,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
     private D1 div1Coupe;
     private D2 div2Coupe;
     private JPanel pano;
+    private ClubNationnal clubCoupe;
 
     // private Tableau_Score score;
     public MaFenetre() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
@@ -148,6 +151,20 @@ public final class MaFenetre extends JFrame implements ActionListener {
             } catch (SQLException ex) {
                 Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            try {
+                clubCoupe = new ClubNationnal((String) choix.getPays().getSelectedItem());
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
             if (choix.getChoixChampionnat().getSelectedItem().equals("D1") || choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
 
                 manuAuto();
@@ -167,6 +184,20 @@ public final class MaFenetre extends JFrame implements ActionListener {
                 }
                 pano.setVisible(false);
 
+            } else if (choix.getChoixChampionnat().getSelectedItem().equals("Coupe Nationnale")) {
+                System.err.println("ici");
+                try {
+
+                    afficheCoupeNationnale((String) choix.getPays().getSelectedItem());
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } else if (ae.getSource() == manu) {
             pano.setVisible(false);
@@ -230,12 +261,21 @@ public final class MaFenetre extends JFrame implements ActionListener {
     }
 
     public void afficheCoupeLigue(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-        div1Coupe = new D1(pays);
-        div2Coupe = new D2(pays);
+        
 
         System.err.println("coupe ligue");
         CoupeLigue coupeLigue = new CoupeLigue(div1Coupe, div2Coupe);
         coupeLigue.match(coupeLigue.getListe(), 8);
+
+        affichage_tableau();
+    }
+
+    public void afficheCoupeNationnale(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+      
+
+        System.err.println("coupe nationnale");
+        CoupeNationnale coupeNationnale = new CoupeNationnale(div1Coupe, div2Coupe, clubCoupe);
+        coupeNationnale.match(coupeNationnale.getListe(), 8);
 
         affichage_tableau();
     }
@@ -372,7 +412,25 @@ public final class MaFenetre extends JFrame implements ActionListener {
                 add(tableauScore, BorderLayout.SOUTH);
                 break;
 
-            case "Coupe Nationale":
+            case "Coupe Nationnale":
+                ArrayList<Equipe> temp = new ArrayList<>();
+                ((MonModelTable) tableauScore.getTable().getModel()).removeAll();
+
+                for (int i = 0; i < div1Coupe.getDivision1().size(); i++) {
+                    temp.add(div1Coupe.getDivision1().get(i));
+                }
+                for (int j = 0; j < div2Coupe.getDivision2().size(); j++) {
+                    temp.add(div2Coupe.getDivision2().get(j));
+                }
+                for (int j = 0; j < clubCoupe.getClub().size(); j++) {
+                    temp.add(clubCoupe.getClub().get(j));
+                }
+
+                for (int i = 0; i < temp.size(); i++) {
+                    ((MonModelTable) tableauScore.getTable().getModel()).addLigne(temp.get(i).getNom(), Integer.toString(r.classementCoupeByName(temp.get(i).getNom(), temp.get(i).getType())), Integer.toString(temp.get(i).getPts()), Integer.toString(temp.get(i).getJ()), Integer.toString(temp.get(i).getG()), Integer.toString(temp.get(i).getN()), Integer.toString(temp.get(i).getP()), Integer.toString(temp.get(i).getBP()), Integer.toString(temp.get(i).getBC()), Integer.toString(temp.get(i).getDiff()));
+                }
+
+                add(tableauScore, BorderLayout.SOUTH);
                 break;
 
             case "Europa League":
