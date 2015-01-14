@@ -18,47 +18,21 @@ import javax.swing.JTable;
 public class D2 implements fight {
 
     private ArrayList<Equipe> division2;
-    //private BD data;
     private String pays;
     private Requetes r;
     private Equipe barrage1, barrage2;
-    private ArrayList<Observateur> observateur;
 
     public D2(String pays) throws SQLException {
         this.pays = pays;
-        //  data= new BD();
         division2 = new ArrayList<>();
         r = new Requetes();
-
         division2 = r.getEquipeByPaysAndChampionnat(this.pays, "d2");
-
-        /*String cmd="SELECT * FROM d2 where Pays ='"+this.pays+"'";
-         ResultSet rs=data.link.executeQuery(cmd);
-        
-         while (rs.next()){
-            
-         //division2.add(new Equipe(rs.getString("Nom_Equipe"), i, "D2"));
-         division2.add(new Equipe(rs.getInt("Classement"), rs.getString("Nom_Equipe"), rs.getInt("Pts"), rs.getInt("J"), rs.getInt("G"), rs.getInt("N"), rs.getInt("P"), rs.getInt("BP"), rs.getInt("BC"), rs.getInt("Diff"), rs.getString("Pays")));
-         System.out.println("Equipe : "+rs.getString("Nom_Equipe")+" "+rs.getInt("Classement")+" "+ rs.getInt("Pts")+" "+ rs.getInt("J")+" "+ rs.getInt("G")+" "+ rs.getInt("N")+" "+rs.getInt("P")+" "+rs.getInt("BP")+" "+rs.getInt("BC")+" "+rs.getInt("Diff"));
-         //  i++;
-         }*/
-        System.out.println(division2.size());
-
-        /*  fight(division2.get(0), division2.get(2));
-         affichage();
-         fight(division2.get(0), division2.get(1));
-         affichage();
-         fight(division2.get(2), division2.get(0));
-         */
     }
 
     public D2() throws SQLException {
-        //  data= new BD();
         division2 = new ArrayList<>();
         r = new Requetes();
-
         division2 = r.getEquipeByChampionnat("d1");
-        observateur = new ArrayList<>();
         System.out.println(division2.size());
     }
 

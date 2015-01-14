@@ -4,6 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author Judicaëlle
+ */
 public class CoupeLigue implements fight {
 
     private D1 d1;

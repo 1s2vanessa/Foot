@@ -1,6 +1,5 @@
 package Modele;
 
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -83,7 +82,6 @@ public class Requetes {
             list.get(j).setClassement(j + 1);
             cmd2 = "UPDATE `" + Championnat + "` SET `Classement`='" + (j + 1) + "' WHERE Nom_Equipe ='" + list.get(j).getNom() + "'";
             data.link.executeUpdate(cmd2);
-//            list.get(j).toString();
         }
         return list;
     }
@@ -177,9 +175,20 @@ public class Requetes {
         for (int j = 1; j < i + 1; j++) {
             cmd = "UPDATE `d2` SET `Pts`='0',`J`='0',`G`='0',`N`='0',`P`='0',`BP`='0',`BC`='0',`Diff`='0'";
             data.link.executeUpdate(cmd);
-
-            //System.err.println(j);
         }
+
+        selection = "SELECT * FROM `clubs nationals`";
+        rs = data.link.executeQuery(selection);
+        i = 0;
+        while (rs.next()) {
+            i++;
+        }
+
+        for (int j = 1; j < i + 1; j++) {
+            cmd = "UPDATE `clubs nationals` SET `Pts`='0',`J`='0',`G`='0',`N`='0',`P`='0',`BP`='0',`BC`='0',`Diff`='0'";
+            data.link.executeUpdate(cmd);
+        }
+
     }
 
     public ArrayList<Equipe> dernieresEquipeD1(String pays) throws SQLException {
@@ -290,8 +299,7 @@ public class Requetes {
 //              
 //          }
 //    }
-    
-     public ArrayList<Equipe> ClassementCoupeNationnale(String pays) throws SQLException {
+    public ArrayList<Equipe> ClassementCoupeNationnale(String pays) throws SQLException {
         //Pour classer les équipes
         String cmd = "SELECT * FROM d1 where Pays ='" + pays + "' ORDER BY Pts DESC";
         String cmd1 = "SELECT * FROM d2 where Pays ='" + pays + "' ORDER BY Pts DESC";
@@ -311,8 +319,8 @@ public class Requetes {
 
             i++;
         }
-        
-         ResultSet rs3 = data.link.executeQuery(cmd4);
+
+        ResultSet rs3 = data.link.executeQuery(cmd4);
         while (rs3.next()) {
             list.add(new Equipe(i, rs3.getString("Nom_Equipe"), rs3.getInt("Pts"), rs3.getInt("J"), rs3.getInt("G"), rs3.getInt("N"), rs3.getInt("P"), rs3.getInt("BP"), rs3.getInt("BC"), rs3.getInt("Diff"), rs3.getString("Pays"), "clubs nationals"));
 

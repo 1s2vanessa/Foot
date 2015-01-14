@@ -14,29 +14,21 @@ public class D1 implements fight {
     private ArrayList<Equipe> division1;
     private String pays;
     private Requetes r;
-    private ArrayList<Observateur> observateur;
     private Equipe barrage1, barrage2;
     private ArrayList<Equipe> echange= new ArrayList<Equipe>();
 
     public D1() throws SQLException {
-        //  data= new BD();
         division1 = new ArrayList<>();
         r = new Requetes();
-
         division1 = r.getEquipeByChampionnat("d1");
-        observateur = new ArrayList<>();
-        System.out.println(division1.size());
     }
 
     public D1(String pays) throws SQLException {
         this.pays = pays;
-        //  data= new BD();
         division1 = new ArrayList<>();
         r = new Requetes();
-
         division1 = r.getEquipeByPaysAndChampionnat(pays, "d1");
-        observateur = new ArrayList<>();
-        System.out.println(division1.size());
+        //System.out.println(division1.size());
     }
 
     public Equipe Barrage() throws SQLException {
