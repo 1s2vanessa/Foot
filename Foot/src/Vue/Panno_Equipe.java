@@ -33,7 +33,7 @@ public class Panno_Equipe extends JPanel{
     private JButton validerEquipe;
     private JLabel e1, e2;
 
-    public Panno_Equipe(String pays, String championnat) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public Panno_Equipe(String pays, String championnat) throws SQLException {
 
         this.pays = pays;
         this.championnat = championnat;
@@ -43,7 +43,7 @@ public class Panno_Equipe extends JPanel{
         init();
     }
 
-    public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public void init() throws  SQLException {
 
         equipe1 = new JComboBox();
         equipe2 = new JComboBox();
@@ -125,12 +125,6 @@ public class Panno_Equipe extends JPanel{
     this.removeAll();
         try {
             init();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Panno_Equipe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(Panno_Equipe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Panno_Equipe.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Panno_Equipe.class.getName()).log(Level.SEVERE, null, ex);
         }

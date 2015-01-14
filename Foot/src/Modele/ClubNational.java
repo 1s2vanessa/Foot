@@ -17,14 +17,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
-public class ClubNationnal implements fight{
+public class ClubNational implements fight{
 
     private ArrayList<Equipe> club;
     private String pays;
     private Requetes r;
     private Equipe barrage1, barrage2;
 
-    public ClubNationnal() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public ClubNational() throws SQLException {
           //  data= new BD();
         club = new ArrayList<>();
         r = new Requetes();
@@ -33,7 +33,7 @@ public class ClubNationnal implements fight{
         System.out.println(club.size());
     }
     
-    public ClubNationnal(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public ClubNational(String pays) throws SQLException {
         this.pays = pays;
         //  data= new BD();
         club = new ArrayList<>();
@@ -211,15 +211,7 @@ public class ClubNationnal implements fight{
 //        }
     }
 
-    
-    /*public void finD1() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
-     
-        if(r.finSaison("d1", pays)==true){
-            Equipe tmp= Barrage();
-            tmp.toString();
-            r.switchEquipeD1D2(pays);
-        }
-    }*/
+ 
     public ArrayList<Equipe> getClub() {
         return club;
     }

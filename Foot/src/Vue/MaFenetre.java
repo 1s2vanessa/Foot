@@ -5,9 +5,9 @@
  */
 package Vue;
 
-import Modele.ClubNationnal;
+import Modele.ClubNational;
 import Modele.CoupeLigue;
-import Modele.CoupeNationnale;
+import Modele.CoupeNationale;
 import Modele.D1;
 import Modele.D2;
 import Modele.Equipe;
@@ -44,11 +44,11 @@ public final class MaFenetre extends JFrame implements ActionListener {
     private Panno_Choix choix;
     private Panno_Equipe equipe;
     private Requetes r;
-    private JButton manu, auto;
+    private JButton manu, auto, semiAuto;
     private D1 div1Coupe;
     private D2 div2Coupe;
     private JPanel pano;
-    private ClubNationnal clubCoupe;
+    private ClubNational clubCoupe;
 
     // private Tableau_Score score;
     public MaFenetre() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
@@ -77,6 +77,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
         menu1.add(d2Ang);
         barreMenu.add(menu1);
         this.setJMenuBar(barreMenu);
+        pano = new JPanel();
 
         tableauScore = new Tableau_Score();
         //// tableauScoreD1 = new Tableau_Score();
@@ -106,15 +107,16 @@ public final class MaFenetre extends JFrame implements ActionListener {
     }
 
     public void manuAuto() {
-
-        pano = new JPanel();
         pano.setBorder(new TitledBorder("Choix déroulement"));
         pano.setSize(new Dimension(400, 100));
         manu = new JButton("Manuel");
         auto = new JButton("Automatique");
+        semiAuto = new JButton("Semi-Automatique");
         manu.addActionListener(this);
         auto.addActionListener(this);
+        semiAuto.addActionListener(this);
         pano.add(manu, BorderLayout.WEST);
+        pano.add(semiAuto, BorderLayout.CENTER);
         pano.add(auto, BorderLayout.EAST);
         this.add(pano);
         this.pack();
@@ -129,121 +131,72 @@ public final class MaFenetre extends JFrame implements ActionListener {
         } else if (ae.getSource() == choix.getValiderChoix()) {
             this.remove(equipe);
             this.remove(tableauScore);
+            
+            //création des divisions, des clubs nationaux en fonction du pays choisit
             try {
                 div1Coupe = new D1((String) choix.getPays().getSelectedItem());
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
             try {
                 div2Coupe = new D2((String) choix.getPays().getSelectedItem());
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             try {
-                clubCoupe = new ClubNationnal((String) choix.getPays().getSelectedItem());
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+                clubCoupe = new ClubNational((String) choix.getPays().getSelectedItem());
             } catch (SQLException ex) {
                 Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
+
+            //si une division est choisie alors l'utilisateur à le choix entre auto, semiAuto et manuel qui lui permettra de choisir comment faire
+            //les matchs
             if (choix.getChoixChampionnat().getSelectedItem().equals("D1") || choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
 
                 manuAuto();
+                
+                //si ce n'est pas un division qui est choisie
             } else if (choix.getChoixChampionnat().getSelectedItem().equals("Coupe de la Ligue")) {
 
                 try {
-
                     afficheCoupeLigue((String) choix.getPays().getSelectedItem());
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InstantiationException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SQLException ex) {
                     Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 pano.setVisible(false);
 
-            } else if (choix.getChoixChampionnat().getSelectedItem().equals("Coupe Nationnale")) {
+            } else if (choix.getChoixChampionnat().getSelectedItem().equals("Coupe Nationale")) {
                 System.err.println("ici");
                 try {
-
                     afficheCoupeNationnale((String) choix.getPays().getSelectedItem());
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InstantiationException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SQLException ex) {
                     Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                pano.setVisible(false);
             }
         } else if (ae.getSource() == manu) {
-            pano.setVisible(false);
-            panoEquipe();
+            
 
         } else if (ae.getSource() == auto) {
             pano.setVisible(false);
-            if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
-                try {
+            choixAffiche();
 
-                    afficheD1((String) choix.getPays().getSelectedItem());
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InstantiationException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else if (choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
-                try {
-
-                    afficheD2((String) choix.getPays().getSelectedItem());
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InstantiationException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        }else if (ae.getSource()==semiAuto){
+            
+            try {
+                pano.setVisible(false);
+                panoEquipe();
+            } catch (SQLException ex) {
+                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (ae.getSource() == equipe.getValiderEquipe()) {
+            
+        }else if (ae.getSource() == equipe.getValiderEquipe()) {
 
             try {
                 affichage_tableau();
             } catch (SQLException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if ((JMenuItem) ae.getSource() == d1Fr) {
             RAZ("France", "d1");
@@ -260,8 +213,28 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    public void afficheCoupeLigue(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-        
+    public void choixAffiche() {
+        if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
+            try {
+
+                afficheD1((String) choix.getPays().getSelectedItem());
+            } catch (SQLException ex) {
+                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
+
+            try {
+                afficheD2((String) choix.getPays().getSelectedItem());
+            } catch (SQLException ex) {
+                Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+    }
+
+    public void afficheCoupeLigue(String pays) throws SQLException {
 
         System.err.println("coupe ligue");
         CoupeLigue coupeLigue = new CoupeLigue(div1Coupe, div2Coupe);
@@ -270,17 +243,16 @@ public final class MaFenetre extends JFrame implements ActionListener {
         affichage_tableau();
     }
 
-    public void afficheCoupeNationnale(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-      
+    public void afficheCoupeNationnale(String pays) throws SQLException {
 
-        System.err.println("coupe nationnale");
-        CoupeNationnale coupeNationnale = new CoupeNationnale(div1Coupe, div2Coupe, clubCoupe);
+        System.err.println("coupe nationale");
+        CoupeNationale coupeNationnale = new CoupeNationale(div1Coupe, div2Coupe, clubCoupe);
         coupeNationnale.match(coupeNationnale.getListe(), 8);
 
         affichage_tableau();
     }
 
-    public void afficheD1(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public void afficheD1(String pays) throws SQLException {
 
         System.err.println("D1");
         div1Coupe.match(0);
@@ -296,7 +268,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    public void afficheD2(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public void afficheD2(String pays) throws SQLException {
 
         System.err.println("D2");
         div2Coupe.match(0);
@@ -312,38 +284,24 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    public void panoEquipe() {
-        //this.remove(tableauScoreD1);
-        //this.remove(tableauScoreD2);
+    public void panoEquipe() throws SQLException {
+
         this.remove(tableauScore);
         this.remove(equipe);
-        try {
 
-            equipe = new Panno_Equipe((String) choix.getPays().getSelectedItem(), (String) choix.getChoixChampionnat().getSelectedItem());
-            add(equipe, BorderLayout.CENTER);
+        //permet d'afficher le panneau (omboBox) qui contient le choix des équipes
+        equipe = new Panno_Equipe((String) choix.getPays().getSelectedItem(), (String) choix.getChoixChampionnat().getSelectedItem());
+        add(equipe, BorderLayout.CENTER);
+        equipe.getValiderEquipe().addActionListener(this);
 
-            equipe.getValiderEquipe().addActionListener(this);
-
-        } catch (InstantiationException ex) {
-            Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        //On supprime les données des tableaux
-        //   ((MonModelTable) tableauScoreD1.getTable().getModel()).removeAll();
+//        //On supprime les données des tableaux
         ((MonModelTable) tableauScore.getTable().getModel()).removeAll();
 
-        //On modifie les données des tableaux et on les ré-affiche
+        //On modifie les données des tableaux et on les ré-affiche en fonction de la division choisie
         if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
             for (int i = 0; i < equipe.getDivision1().getDivision1().size(); i++) {
                 ((MonModelTable) tableauScore.getTable().getModel()).addLigne(equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
             }
-            //  add(tableauScoreD1, BorderLayout.SOUTH);
 
         } else if (choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
             for (int i = 0; i < equipe.getDivision2().getDivision2().size(); i++) {
@@ -351,14 +309,13 @@ public final class MaFenetre extends JFrame implements ActionListener {
             }
 
         }
+        
+        //ajout au panneau
         add(tableauScore, BorderLayout.SOUTH);
         pack();
     }
 
-    public void affichage_tableau() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        //this.remove(tableauScoreD1);
-        //this.remove(tableauScoreD2);
-
+    public void affichage_tableau() throws SQLException {
         this.remove(tableauScore);
         pack();
 
@@ -417,13 +374,19 @@ public final class MaFenetre extends JFrame implements ActionListener {
                 ((MonModelTable) tableauScore.getTable().getModel()).removeAll();
 
                 for (int i = 0; i < div1Coupe.getDivision1().size(); i++) {
-                    temp.add(div1Coupe.getDivision1().get(i));
+                    if (div1Coupe.getDivision1().get(i).getJ() > 0) {
+                        temp.add(div1Coupe.getDivision1().get(i));
+                    }
                 }
                 for (int j = 0; j < div2Coupe.getDivision2().size(); j++) {
-                    temp.add(div2Coupe.getDivision2().get(j));
+                    if (div2Coupe.getDivision2().get(j).getJ() > 0) {
+                        temp.add(div2Coupe.getDivision2().get(j));
+                    }
                 }
                 for (int j = 0; j < clubCoupe.getClub().size(); j++) {
-                    temp.add(clubCoupe.getClub().get(j));
+                    if (clubCoupe.getClub().get(j).getJ() > 0) {
+                        temp.add(clubCoupe.getClub().get(j));
+                    }
                 }
 
                 for (int i = 0; i < temp.size(); i++) {

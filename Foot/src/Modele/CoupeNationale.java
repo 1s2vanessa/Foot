@@ -1,24 +1,20 @@
 package Modele;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.time;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class CoupeNationnale implements fight {
+public class CoupeNationale implements fight {
 
     private D1 d1;
     private D2 d2;
-    private ClubNationnal club;
+    private ClubNational club;
     private ArrayList<Equipe> gagnant;
     private ArrayList<Equipe> liste;
     private ArrayList<Equipe> perdant;
     private Requetes r;
 
-    public CoupeNationnale(D1 d1, D2 d2, ClubNationnal club) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public CoupeNationale(D1 d1, D2 d2, ClubNational club) throws SQLException {
         r = new Requetes();
         this.d1 = d1;
         this.d2 = d2;
@@ -31,7 +27,7 @@ public class CoupeNationnale implements fight {
         for (int i = 0; i < d2.getDivision2().size(); i++) {
             this.d2.getDivision2().get(i).setClassement(r.classementCoupeByName(d2.getDivision2().get(i).getNom(), "d2"));
         }
-        System.err.println("d1 et d2 nationnale");
+        System.err.println("d1 et d2 nationale");
         for (int i = 0; i < club.getClub().size(); i++) {
             this.club.getClub().get(i).setClassement(r.classementCoupeByName(club.getClub().get(i).getNom(), "clubs nationals"));
         }
@@ -68,9 +64,8 @@ public class CoupeNationnale implements fight {
 
         if (list.size() < 3) {
             System.out.println("Le gagnant est = " + list.get(0).getNom());
-            JOptionPane jop1;
-            jop1 = new JOptionPane();
-            jop1.showMessageDialog(null, "Le gagnant de la coupe de la coupe Nationale est : " + list.get(0).getNom(), "Message", JOptionPane.INFORMATION_MESSAGE);
+           
+            JOptionPane.showMessageDialog(null, "Le gagnant de la coupe de la coupe Nationale est : " + list.get(0).getNom(), "Message", JOptionPane.INFORMATION_MESSAGE);
 
             //return list.get(0).getNom();
         } else {

@@ -18,7 +18,7 @@ public class D1 implements fight {
     private Equipe barrage1, barrage2;
     private ArrayList<Equipe> echange= new ArrayList<Equipe>();
 
-    public D1() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public D1() throws SQLException {
         //  data= new BD();
         division1 = new ArrayList<>();
         r = new Requetes();
@@ -28,7 +28,7 @@ public class D1 implements fight {
         System.out.println(division1.size());
     }
 
-    public D1(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public D1(String pays) throws SQLException {
         this.pays = pays;
         //  data= new BD();
         division1 = new ArrayList<>();
@@ -39,7 +39,7 @@ public class D1 implements fight {
         System.out.println(division1.size());
     }
 
-    public Equipe Barrage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public Equipe Barrage() throws SQLException {
 
         for (int i = 0; i < division1.size(); i++) {
             if (division1.get(i).getPays().equals("France") && division1.get(i).getClassement() == 3) {
@@ -205,7 +205,7 @@ public class D1 implements fight {
 //        }
     }
 
-    public void finD1() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public void finD1() throws SQLException {
 
         if (r.finSaison("d1", pays) == true) {
             Equipe tmp = Barrage();
@@ -224,9 +224,7 @@ public class D1 implements fight {
 
     public void match(int nbMatch) throws SQLException {
         if (nbMatch == 19) {
-            JOptionPane jop1;
-            jop1 = new JOptionPane();
-            jop1.showMessageDialog(null, "Fin de D1 pour  : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Fin de D1 pour  : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
 
         } else {
             for (int i = 0; i < division1.size(); i++) {

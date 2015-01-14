@@ -13,7 +13,7 @@ public class Requetes {
 
     private BD data;
 
-    public Requetes() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public Requetes() throws SQLException {
         data = new BD();
     }
 

@@ -13,7 +13,7 @@ public class CoupeLigue implements fight {
     private ArrayList<Equipe> perdant;
     private Requetes r;
 
-    public CoupeLigue(D1 d1, D2 d2) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public CoupeLigue(D1 d1, D2 d2) throws SQLException {
         r = new Requetes();
         this.d1 = d1;
         this.d2 = d2;

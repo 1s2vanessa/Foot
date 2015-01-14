@@ -21,10 +21,10 @@ public class D2 implements fight {
     //private BD data;
     private String pays;
     private Requetes r;
-      private Equipe barrage1, barrage2;
-      private ArrayList<Observateur> observateur;
+    private Equipe barrage1, barrage2;
+    private ArrayList<Observateur> observateur;
 
-    public D2(String pays) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public D2(String pays) throws SQLException {
         this.pays = pays;
         //  data= new BD();
         division2 = new ArrayList<>();
@@ -51,9 +51,9 @@ public class D2 implements fight {
          fight(division2.get(2), division2.get(0));
          */
     }
-    
-     public D2() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-          //  data= new BD();
+
+    public D2() throws SQLException {
+        //  data= new BD();
         division2 = new ArrayList<>();
         r = new Requetes();
 
@@ -62,29 +62,29 @@ public class D2 implements fight {
         System.out.println(division2.size());
     }
 
-   public Equipe Barrage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+    public Equipe Barrage() throws SQLException {
 
-        for(int i=0;i<division2.size();i++){
-            if(division2.get(i).getPays().equals("France") && division2.get(i).getClassement()==3){
-                barrage1 = new Equipe(division2.get(i).getClassement(),division2.get(i).getNom(),division2.get(i).getPts(),division2.get(i).getJ(),division2.get(i).getG(),division2.get(i).getN(),division2.get(i).getP(),division2.get(i).getBP(),division2.get(i).getBC(),division2.get(i).getDiff(),division2.get(i).getPays(),division2.get(i).getType());
-               
+        for (int i = 0; i < division2.size(); i++) {
+            if (division2.get(i).getPays().equals("France") && division2.get(i).getClassement() == 3) {
+                barrage1 = new Equipe(division2.get(i).getClassement(), division2.get(i).getNom(), division2.get(i).getPts(), division2.get(i).getJ(), division2.get(i).getG(), division2.get(i).getN(), division2.get(i).getP(), division2.get(i).getBP(), division2.get(i).getBC(), division2.get(i).getDiff(), division2.get(i).getPays(), division2.get(i).getType());
+
             }
-            
-            if(division2.get(i).getPays().equals("Angleterre") && division2.get(i).getClassement()==4){
-                barrage2 = new Equipe(division2.get(i).getClassement(),division2.get(i).getNom(),division2.get(i).getPts(),division2.get(i).getJ(),division2.get(i).getG(),division2.get(i).getN(),division2.get(i).getP(),division2.get(i).getBP(),division2.get(i).getBC(),division2.get(i).getDiff(),division2.get(i).getPays(),division2.get(i).getType());
+
+            if (division2.get(i).getPays().equals("Angleterre") && division2.get(i).getClassement() == 4) {
+                barrage2 = new Equipe(division2.get(i).getClassement(), division2.get(i).getNom(), division2.get(i).getPts(), division2.get(i).getJ(), division2.get(i).getG(), division2.get(i).getN(), division2.get(i).getP(), division2.get(i).getBP(), division2.get(i).getBC(), division2.get(i).getDiff(), division2.get(i).getPays(), division2.get(i).getType());
             }
-            
+
         }
-            fight(barrage1,barrage2);
-        if(barrage1.getBP()>barrage2.getBP()){
-            System.out.println(barrage1.getNom()+" "+barrage1.getPays());
+        fight(barrage1, barrage2);
+        if (barrage1.getBP() > barrage2.getBP()) {
+            System.out.println(barrage1.getNom() + " " + barrage1.getPays());
             return barrage1;
-        }else{
-            System.out.println(barrage2.getNom()+" "+barrage2.getPays());
+        } else {
+            System.out.println(barrage2.getNom() + " " + barrage2.getPays());
             return barrage2;
-            
+
         }
-        
+
     }
 
     public void affichage() {
@@ -96,7 +96,7 @@ public class D2 implements fight {
     @Override
     public void fight(Equipe e1, Equipe e2) throws SQLException {
 
-      double gagnant = Math.random();
+        double gagnant = Math.random();
         int nbButMarque = (int) (Math.random() * 100) % 5;
         if (nbButMarque == 0) {
             nbButMarque = 1;
@@ -114,7 +114,7 @@ public class D2 implements fight {
                 System.out.println("Equipe déjà affrontée");
                 gagnant = -1;
             }
-            
+
             if (gagnant != -1) {
                 if (gagnant > -1 && gagnant < 0.5) {
                     //Equipe gagnante
@@ -173,16 +173,14 @@ public class D2 implements fight {
 
                     System.err.println("Gagnante : " + e2.getNom());
                 }
-            r.MAJBd(e1, "d2");
-            r.MAJBd(e2, "d2");
-            e1.getDeja_joue().add(e2);
-            e2.getDeja_joue().add(e1);
+                r.MAJBd(e1, "d2");
+                r.MAJBd(e2, "d2");
+                e1.getDeja_joue().add(e2);
+                e2.getDeja_joue().add(e1);
 
-              
-
-          ArrayList<Equipe> tmp = r.Classement(e1.getPays(), "d2");
+                ArrayList<Equipe> tmp = r.Classement(e1.getPays(), "d2");
          //   division2.clear();
-             //     division2.addAll(tmp);
+                //     division2.addAll(tmp);
                 for (int j = 0; j < tmp.size(); j++) {
                     for (int i = 0; i < division2.size(); i++) {
                         if (division2.get(i).getNom().equals(tmp.get(j).getNom())) {
@@ -196,11 +194,11 @@ public class D2 implements fight {
 //                    }
                     }
                 }
-                
+
             }
         }
          // r.envoiEuropa(e2);
-       // echangeD1D2();
+        // echangeD1D2();
     }
 
     public ArrayList<Equipe> getDivision2() {
@@ -210,11 +208,10 @@ public class D2 implements fight {
     public void setDivision2(ArrayList<Equipe> division2) {
         this.division2 = division2;
     }
- public void match(int nbMatch) throws SQLException {
+
+    public void match(int nbMatch) throws SQLException {
         if (nbMatch == 19) {
-            JOptionPane jop1;
-            jop1 = new JOptionPane();
-            jop1.showMessageDialog(null, "Fin de D2 pour  : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Fin de D2 pour  : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
 
         } else {
             for (int i = 0; i < division2.size(); i++) {
@@ -227,8 +224,8 @@ public class D2 implements fight {
         }
 
     }
- 
-  public void finD2() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+    public void finD2() throws SQLException{
 
         if (r.finSaison("d2", pays) == true) {
             Equipe tmp = Barrage();
