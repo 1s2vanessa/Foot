@@ -41,10 +41,10 @@ public class MonModelTable extends DefaultTableModel implements Observable {
         super();
         observateur = new ArrayList<>();
     }
-    
-    public void removeAll(){
-        int max=this.getRowCount();
-        for(int i=0;i<max;i++){
+
+    public void removeAll() {
+        int max = this.getRowCount();
+        for (int i = 0; i < max; i++) {
             removeLigne(0);
         }
     }
@@ -112,6 +112,14 @@ public class MonModelTable extends DefaultTableModel implements Observable {
     public void removeLigne(int index) {
         liste.remove(index);
         fireTableRowsDeleted(index, index);
+        notifyObs();
+    }
+
+    public void removeAllLigne() {
+        for (int i = liste.size() - 1; i > -1; i--) {
+            liste.remove(i);
+            fireTableRowsDeleted(i, i);
+        }
         notifyObs();
     }
 

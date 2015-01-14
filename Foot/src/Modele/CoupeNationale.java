@@ -183,7 +183,7 @@ public class CoupeNationale implements fight {
 
                     //Equipe 1
                     e1.setJ(e1.getJ() + 1);
-                    e1.setP(e1.getP() + 1);
+                    e1.setN(e1.getN() + 1);
                     e1.setPts(e1.getPts() + 1);
                     e1.setBP(e1.getBP() + nbButEcaisse);
                     e1.setBC(e1.getBC() + nbButMarque);

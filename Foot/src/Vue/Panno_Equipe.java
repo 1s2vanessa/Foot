@@ -65,9 +65,9 @@ public class Panno_Equipe extends JPanel{
                 for (int i = 0; i < division1.getDivision1().size(); i++) {
                     equipe1.addItem(division1.getDivision1().get(i).getNom());
                     equipe2.addItem(division1.getDivision1().get(i).getNom());
-                    //((MonModelTable)tableauScoreD1.getModel()).addLigne(division1.getDivision1().get(i).getNom(),Integer.toString(division1.getDivision1().get(i).getClassement()),Integer.toString(division1.getDivision1().get(i).getPts()), Integer.toString(division1.getDivision1().get(i).getJ()), Integer.toString(division1.getDivision1().get(i).getG()),Integer.toString(division1.getDivision1().get(i).getN()),Integer.toString(division1.getDivision1().get(i).getP()),Integer.toString(division1.getDivision1().get(i).getBP()),Integer.toString(division1.getDivision1().get(i).getBC()),Integer.toString(division1.getDivision1().get(i).getDiff()));
                 }
                 break;
+                
             case "D2":
                 division2 = new D2(pays);
                 for (int i = 0; i < division2.getDivision2().size(); i++) {

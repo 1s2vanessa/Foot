@@ -1,21 +1,14 @@
 package Modele;
 
-import Vue.Observateur;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 /**
  *
  * @author Vanessa
  */
-public class D2 implements fight {
+public class D2 implements fight,fightManuel {
 
     private ArrayList<Equipe> division2;
     private String pays;
@@ -121,7 +114,7 @@ public class D2 implements fight {
 
                     //Equipe 1
                     e1.setJ(e1.getJ() + 1);
-                    e1.setP(e1.getP() + 1);
+                    e1.setN(e1.getN() + 1);
                     e1.setPts(e1.getPts() + 1);
                     e1.setBP(e1.getBP() + nbButEcaisse);
                     e1.setBC(e1.getBC() + nbButMarque);
@@ -206,6 +199,99 @@ public class D2 implements fight {
             tmp.toString();
             r.switchEquipeD1D2(pays);
         }
+    }
+    
+    
+    
+    @Override
+    public void fightManuel(Equipe e1, Equipe e2, int e1BP, int e2BP) throws SQLException {
+        int gagnant = 0;
+        if (e1 == e2) {
+            System.out.println("Erreur même equipe");
+
+        } else if (e1 != e2) {
+            if (e1.getDeja_joue().contains(e2)) {
+                System.out.println("Equipe déjà affrontée");
+                gagnant = -1;
+            }
+
+            if (gagnant != -1) {
+                if (e1BP > e2BP) {
+                    //Equipe gagnante
+                    e1.setJ(e1.getJ() + 1);
+                    e1.setG(e1.getG() + 1);
+                    e1.setPts(e1.getPts() + 3);
+                    e1.setBP(e1.getBP() + e1BP);
+                    e1.setBC(e1.getBC() + e2BP);
+                    e1.setDiff(e1.getBP() - e1.getBC());
+
+                    //Equipe perdante
+                    e2.setJ(e2.getJ() + 1);
+                    e2.setP(e2.getP() + 1);
+                    e2.setPts(e2.getPts() - 1);
+                    e2.setBP(e2.getBP() + e2BP);
+                    e2.setBC(e2.getBC() + e1BP);
+                    e2.setDiff(e2.getBP() - e2.getBC());
+
+                    System.err.println("Gagnante : " + e1.getNom());
+                } else if (e1BP == e2BP) {
+                    //Equipe 2
+                    e2.setJ(e2.getJ() + 1);
+                    e2.setN(e2.getN() + 1);
+                    e2.setPts(e2.getPts() + 1);
+                    e2.setBP(e2.getBP() + e2BP);
+                    e2.setBC(e2.getBC() + e1BP);
+                    e2.setDiff(e2.getBP() - e2.getBC());
+
+                    //Equipe 1
+                    e1.setJ(e1.getJ() + 1);
+                    e1.setN(e1.getN() + 1);
+                    e1.setPts(e1.getPts() + 1);
+                    e1.setBP(e1.getBP() + e1BP);
+                    e1.setBC(e1.getBC() + e2BP);
+                    e1.setDiff(e1.getBP() - e1.getBC());
+
+                    System.err.println("Match Nul");
+                } else {
+                    //Equipe gagnante
+                    e2.setJ(e2.getJ() + 1);
+                    e2.setG(e2.getG() + 1);
+                    e2.setPts(e2.getPts() + 3);
+                    e2.setBP(e2.getBP() + e2BP);
+                    e2.setBC(e2.getBC() + e1BP);
+                    e2.setDiff(e2.getBP() - e2.getBC());
+
+                    //Equipe perdante
+                    e1.setJ(e1.getJ() + 1);
+                    e1.setP(e1.getP() + 1);
+                    e1.setPts(e1.getPts() - 1);
+                    e1.setBP(e1.getBP() + e1BP);
+                    e1.setBC(e1.getBC() + e2BP);
+                    e1.setDiff(e1.getBP() - e1.getBC());
+
+                    System.err.println("Gagnante : " + e2.getNom());
+                }
+
+                //MAJ BD pour le classement
+                r.MAJBd(e1, "d1");
+                r.MAJBd(e2, "d1");
+
+                e1.getDeja_joue().add(e2);
+                e2.getDeja_joue().add(e1);
+
+                ArrayList<Equipe> tmp = r.Classement(e1.getPays(), "d1");
+                for (int j = 0; j < tmp.size(); j++) {
+                    for (int i = 0; i < division2.size(); i++) {
+                        if (division2.get(i).getNom().equals(tmp.get(j).getNom())) {
+                            division2.get(i).setClassement(tmp.get(j).getClassement());
+                        }
+
+                    }
+                }
+
+            }
+        }
+
     }
 
 }
