@@ -6,7 +6,9 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Vanessa
+ * @author Vanessa 
+ * 
+ * La classe D1 permet la création d'une liste d'équipe appartenant à la division1
  */
 public class D1 implements fight, fightManuel {
 
@@ -16,12 +18,23 @@ public class D1 implements fight, fightManuel {
     private Equipe barrage1, barrage2;
     private ArrayList<Equipe> echange = new ArrayList<Equipe>();
 
+    /**
+     * Création de la division1
+     *
+     * @throws SQLException
+     */
     public D1() throws SQLException {
         division1 = new ArrayList<>();
         r = new Requetes();
         division1 = r.getEquipeByChampionnat("d1");
     }
 
+    /**
+     * Création de la division1 en fonction d'un pays
+     *
+     * @param pays pays
+     * @throws SQLException
+     */
     public D1(String pays) throws SQLException {
         this.pays = pays;
         division1 = new ArrayList<>();
@@ -30,6 +43,13 @@ public class D1 implements fight, fightManuel {
         //System.out.println(division1.size());
     }
 
+    /**
+     * Permet de gerer le barrage entre 2 équipes pour savoir qui va en Ligue
+     * des Champions ou en Europa League
+     *
+     * @return l'équipe qui a gagné le barrage
+     * @throws SQLException
+     */
     public Equipe Barrage() throws SQLException {
 
         for (int i = 0; i < division1.size(); i++) {
@@ -65,6 +85,10 @@ public class D1 implements fight, fightManuel {
 
     }
 
+    /**
+     * Cette fonction permet un affichage console des valeurs contenues dans la
+     * liste des équipes de la division1
+     */
     public void affichage() {
         for (int i = 0; i < division1.size(); i++) {
             System.out.println(division1.get(i).getNom() + " " + division1.get(i).getClassement() + " " + division1.get(i).getPts() + " " + division1.get(i).getJ() + " " + division1.get(i).getG() + " " + division1.get(i).getN() + " " + division1.get(i).getP() + " " + division1.get(i).getBC() + " " + division1.get(i).getBP() + " " + division1.get(i).getDiff());
@@ -75,6 +99,13 @@ public class D1 implements fight, fightManuel {
         r.switchEquipeD1D2(pays);
     }
 
+    /**
+     * permet de générer des résultats aléatoires de match entre 2 équipes et 
+     * permet la MAJ de la BD
+     * @param e1 correspond à l'équipe qui va jouer contre e2
+     * @param e2 correspond à l'équipe qui va jouer contre e1
+     * @throws SQLException
+     */
     @Override
     public void fight(Equipe e1, Equipe e2) throws SQLException {
 
@@ -196,6 +227,11 @@ public class D1 implements fight, fightManuel {
 //        }
     }
 
+    
+    /**
+     * Cette fonction permet de vérifié si la D1 est finie
+     * @throws SQLException 
+     */
     public void finD1() throws SQLException {
 
         if (r.finSaison("d1", pays) == true) {
@@ -213,6 +249,11 @@ public class D1 implements fight, fightManuel {
         this.division1 = division1;
     }
 
+    /**
+     * Fonction récursive qui permet de générer tous les matchs de la D1 automatiquement
+     * @param nbMatch correspond au nombre de match
+     * @throws SQLException 
+     */
     public void match(int nbMatch) throws SQLException {
         if (nbMatch == 19) {
             JOptionPane.showMessageDialog(null, "Fin de D1 pour  : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -229,6 +270,14 @@ public class D1 implements fight, fightManuel {
 
     }
 
+    /**
+     * permet le match entre 2 équipes et la MAJ de la BD avec les paramètres de la fonction
+     * @param e1 correspond à l'équipe qui va jouer contre e2
+     * @param e2 correspond à l'équipe qui va jouer contre e1
+     * @param e1BP correspond au nombre de buts marqués par e1
+     * @param e2BP correspond au nombre de buts marqués par e2
+     * @throws SQLException
+     */
     @Override
     public void fightManuel(Equipe e1, Equipe e2, int e1BP, int e2BP) throws SQLException {
         int gagnant = 0;

@@ -23,6 +23,8 @@ import javax.swing.border.TitledBorder;
 /**
  *
  * @author Vanessa
+ * 
+ * GestionManuelle ouvre une JDialog qui permet de gérer manuellement des matchs
  */
 public class GestionManuelle extends JDialog implements ActionListener {
     
@@ -34,15 +36,29 @@ public class GestionManuelle extends JDialog implements ActionListener {
     private JPanel info = new JPanel();
     private GridBagConstraints contraintes;
     
-    public GestionManuelle(Frame frame, String string, boolean bln, String p, String c) throws SQLException {
+    
+    /**
+     * Constructeur de la classe
+     * @param frame : correspond à la fenetre qui est envoyée depuis MaFenetre
+     * @param string : nom de la JDialog
+     * @param bln : pour autoriser les interactions avec la fenetre principale
+     * @param pays : récuperer le pays selectionné
+     * @param championnat : récupérer le chmapionnat choisit
+     * @throws SQLException 
+     */
+    public GestionManuelle(Frame frame, String string, boolean bln, String pays, String championnat) throws SQLException {
         super(frame, string, bln);
-        pays = p;
-        championnat = c;
+        this.pays = pays;
+        this.championnat = championnat;
         init();
         this.pack();
         this.setVisible(true);
     }
     
+    /**
+     * Initialisation et placement des éléments de la JDialog
+     * @throws SQLException 
+     */
     public void init() throws SQLException {
         panoEquipe = new Panno_Equipe(pays, championnat);
         panoEquipe.getValiderEquipe().setVisible(false);
@@ -128,6 +144,9 @@ public class GestionManuelle extends JDialog implements ActionListener {
         
     }
     
+    /**
+     * Pour rafraichir le label Equipe1 qui affiche l'équipe qui a été choisit pour être l'équipe1
+     */
     public void labelEquipe1() {
         info.remove(e1Label);
         e1Label = new JLabel("Equipe 1 :  " + panoEquipe.getEquipe1().getSelectedItem());
@@ -139,6 +158,9 @@ public class GestionManuelle extends JDialog implements ActionListener {
         
     }
     
+      /**
+     * Pour rafraichir le label Equipe2 qui affiche l'équipe qui a été choisit pour être l'équipe2
+     */
     public void labelEquipe2() {
         info.remove(e2Label);
         e2Label = new JLabel("Equipe 2 :  " + panoEquipe.getEquipe2().getSelectedItem());
@@ -151,6 +173,10 @@ public class GestionManuelle extends JDialog implements ActionListener {
         this.revalidate();
     }
     
+    /**
+     * permet de gérer les interactions de la JDialog
+     * @param ae 
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == reset) {
@@ -165,26 +191,36 @@ public class GestionManuelle extends JDialog implements ActionListener {
         }
     }
 
+    /**
+     * retourne le Panno_Equipe
+     * @return le panneau qui contient les 2 comboBox pour le chois des équipe
+     */
     public Panno_Equipe getPanoEquipe() {
         return panoEquipe;
     }
 
-    public JTextField getE1BC() {
-        return e1BC;
-    }
-
+    /**
+     * retourne le contenu des buts marqués pa l'équipe 1
+     * @return BC de l'équipe 1
+     */
     public JTextField getE1BP() {
         return e1BP;
     }
 
-    public JTextField getE2BC() {
-        return e2BC;
-    }
 
+     /**
+     * retourne le contenu des buts marqués pa l'équipe 2
+     * @return BC de l'équipe 2
+     */
     public JTextField getE2BP() {
         return e2BP;
     }
 
+
+    /**
+     * Permet de récupérer le button de la JDialog ^pour pouvoir l'utiliser sur MaFenetre
+     * @return le bouton valider de la JDialog
+     */
     public JButton getValider() {
         return valider;
     }

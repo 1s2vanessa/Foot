@@ -25,6 +25,8 @@ import javax.swing.border.TitledBorder;
 /**
  *
  * @author Vanessa
+ * 
+ * Cette classe est la fenetre qui contient l'interface graphique
  */
 public final class MaFenetre extends JFrame implements ActionListener {
 
@@ -44,6 +46,15 @@ public final class MaFenetre extends JFrame implements ActionListener {
     private GestionManuelle gestionManuelle;
     private int manuSemi;
 
+    
+    
+    /**
+     * Constructeur de la classe
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws SQLException 
+     */
     public MaFenetre() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         mmt = new MonModelTable();
         r = new Requetes();
@@ -53,6 +64,15 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
+    /**
+     * Permet l'initialisation des éléments contenus dans la fenetre
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws SQLException 
+     */
     public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         RAZtout();
         //menu
@@ -93,6 +113,15 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
+    /**
+     * Cette fonction permet l'affichage d'un panneau sur la fenetre
+     * qui permet à l'utilisateur de choisir une action parmi 3 :
+     * automatique : les matchs sont générés automatiquement
+     * semi-automatique : l'utilisateur doit juste choisir les équipes qui jouent un match et les résultats sont générés aléatoirement
+     * manuel : l'utilisateur choisit les équipes et les scores de chaques équipes
+     */
     public void manuAuto() {
         pano.setBorder(new TitledBorder("Choix déroulement"));
         pano.setSize(new Dimension(400, 100));
@@ -111,7 +140,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
         this.revalidate();
 
     }
+    
 
+    /**
+     * permet la gestion des interactions avec la fenetre
+     * @param ae 
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
 
@@ -195,7 +229,14 @@ public final class MaFenetre extends JFrame implements ActionListener {
         }
 
     }
-
+    
+    
+    
+    
+    /**
+     * Cette fonction permet de gérer les matchs manuellement en utilisant la fonction fightManuel de la D1 ou D2
+     * et permet MAJ de la BD via la fonction fightManuel
+     */
     public void gestionManuelleMAJbd() {
         Equipe e1 = null, e2 = null;
 
@@ -243,6 +284,11 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
+    /**
+     * initalisation de div1Coupe, div2Coupe et clubCoup
+     */
     public void creationDiv() {
         //création des divisions, des clubs nationaux en fonction du pays choisit
         try {
@@ -265,6 +311,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
+    /**
+     * Affiche le panneau qui contient les choix du championnat et du pays
+     * @throws SQLException 
+     */
     public void choixAffichePano() throws SQLException {
         //si une division est choisie alors l'utilisateur à le choix entre auto, semiAuto 
         //et manuel qui lui permettra de choisir comment faire les matchs
@@ -287,6 +339,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
         this.pack();
     }
 
+    
+    
+    /**
+     * Une fonction de génération de matchs automatique sera appelé en fonction du chmpionnat choisit
+     * @throws SQLException 
+     */
     public void choixAffiche() throws SQLException {
         if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
             afficheD1matchAuto((String) choix.getPays().getSelectedItem());
@@ -297,6 +355,14 @@ public final class MaFenetre extends JFrame implements ActionListener {
         }
     }
 
+    
+    
+    
+    /**
+     * génére les matchs automatique de la Coupe de la Ligue et MAJ du tableau des scores
+     * @param pays indique le pays selectionné
+     * @throws SQLException 
+     */
     public void afficheCoupeLigue(String pays) throws SQLException {
 
         System.err.println("coupe ligue");
@@ -306,6 +372,13 @@ public final class MaFenetre extends JFrame implements ActionListener {
         affichage_tableau();
     }
 
+    
+    
+    /**
+     * génére les matchs automatique de la Coupe Nationale et MAJ du tableau des scores
+     * @param pays indique le pays selectionné
+     * @throws SQLException 
+     */
     public void afficheCoupeNationale(String pays) throws SQLException {
 
         System.err.println("coupe nationale");
@@ -315,6 +388,14 @@ public final class MaFenetre extends JFrame implements ActionListener {
         affichage_tableau();
     }
 
+    
+    
+    
+    /**
+     * permet la MAJ du tableau des scores pour la D1 suite aux matchs automatiques (utilisation fonction récursive match())
+     * @param pays 
+     * @throws SQLException 
+     */
     public void afficheD1matchAuto(String pays) throws SQLException {
 
         System.err.println("D1");
@@ -336,6 +417,13 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
+     /**
+     * permet la MAJ du tableau des scores pour la D2 suite aux matchs automatiques(utilisation fonction récursive match())
+     * @param pays 
+     * @throws SQLException 
+     */
     public void afficheD2matchAuto(String pays) throws SQLException {
 
         System.err.println("D2");
@@ -356,6 +444,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
+    /**
+     * 
+     * @throws SQLException 
+     */
     public void panoEquipe() throws SQLException {
 
         this.remove(tableauScore);
@@ -387,6 +481,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
+    
+    
+    /**
+     * 
+     * @throws SQLException 
+     */
     public void affichage_tableau() throws SQLException {
         this.remove(tableauScore);
         pack();
@@ -416,7 +516,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
                 }
                 //MAJ de l'affichage du tableau
-                tableauScore.Update();
+                tableauScore.update();
                 add(tableauScore, BorderLayout.SOUTH);
                 break;
 
@@ -438,7 +538,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
                     }
                 }
                 //MAJ de l'affichage du tableau
-                tableauScore.Update();
+                tableauScore.update();
                 add(tableauScore, BorderLayout.SOUTH);
 
                 break;
@@ -509,7 +609,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
          //                ArrayList<Equipe> tmp = r.Classement(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1).getPays(), "d1");
          //                equipe.getDivision1().getDivision1().clear();
          //                equipe.getDivision1().getDivision1().addAll(tmp);
-         //                equipe.Update();
+         //                equipe.update();
 
          }
 
@@ -518,7 +618,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
          ((MonModelTable) tableauScoreD1.getTable().getModel()).setLigne(i, equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
          }
          //MAJ de l'affichage du tableau
-         tableauScoreD1.Update();
+         tableauScoreD1.update();
          add(tableauScoreD1, BorderLayout.SOUTH);
 
          } else if (choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
@@ -535,7 +635,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
          for (int i = 0; i < equipe.getDivision2().getDivision2().size(); i++) {
          ((MonModelTable) tableauScoreD2.getTable().getModel()).setLigne(i, equipe.getDivision2().getDivision2().get(i).getNom(), Integer.toString(equipe.getDivision2().getDivision2().get(i).getClassement()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getPts()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getJ()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getG()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getN()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBC()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getDiff()));
          }
-         tableauScoreD2.Update();
+         tableauScoreD2.update();
          add(tableauScoreD2, BorderLayout.SOUTH);
          }
          */
@@ -543,6 +643,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
+    
+    /**
+     * Permet la remise à zero des buts, nb de parties jouées ... de la base de données pour un pays et un chmapionnat
+     * @param pays : pays concerné par la remise à zéro des buts ....
+     * @param championnat : championnat correspond à la table a mettre les valeurs à jour
+     */
     public void RAZ(String pays, String championnat) {
 
         try {
@@ -564,6 +670,10 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    /**
+     * Permet la remise à zero des buts, nb de parties jouées ... de la base de données pour toutes les équipes
+     */
     public void RAZtout() {
         try {
             r.RAZTotale();
@@ -576,12 +686,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
-    public D1 getDiv1Coupe() {
-        return div1Coupe;
-    }
-
-    public D2 getDiv2Coupe() {
-        return div2Coupe;
-    }
+    
+    
 
 }

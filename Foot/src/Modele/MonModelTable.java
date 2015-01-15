@@ -1,17 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 import Vue.Observateur;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author brice.effantin
- */
+
 public class MonModelTable extends DefaultTableModel implements Observable {
 
     private class Ligne {
@@ -151,7 +144,7 @@ public class MonModelTable extends DefaultTableModel implements Observable {
     @Override
     public void notifyObs() {
         for (Observateur obs : observateur) {
-            obs.Update();
+            obs.update();
         }
     }
 

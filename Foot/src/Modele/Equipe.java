@@ -180,7 +180,7 @@ public class Equipe implements Observable {
     @Override
     public void notifyObs() {
         for (Observateur obs : observateur) {
-            obs.Update();
+            obs.update();
         }
     }
 
