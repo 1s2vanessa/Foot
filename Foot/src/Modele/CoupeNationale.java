@@ -4,30 +4,32 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Judicaëlle
- */
-public class CoupeLigue implements fight {
+public class CoupeNationale implements fight {
 
     private D1 d1;
     private D2 d2;
+    private ClubNational club;
     private ArrayList<Equipe> gagnant;
     private ArrayList<Equipe> liste;
     private ArrayList<Equipe> perdant;
     private Requetes r;
 
-    public CoupeLigue(D1 d1, D2 d2) throws SQLException {
+    public CoupeNationale(D1 d1, D2 d2, ClubNational club) throws SQLException {
         r = new Requetes();
         this.d1 = d1;
         this.d2 = d2;
+        this.club=club;
 
         for (int i = 0; i < d1.getDivision1().size(); i++) {
-            d1.getDivision1().get(i).setClassement(r.classementCoupeByName(d1.getDivision1().get(i).getNom(), "d1"));
+            this.d1.getDivision1().get(i).setClassement(r.classementCoupeByName(d1.getDivision1().get(i).getNom(), "d1"));
         }
 
         for (int i = 0; i < d2.getDivision2().size(); i++) {
-            d2.getDivision2().get(i).setClassement(r.classementCoupeByName(d2.getDivision2().get(i).getNom(), "d2"));
+            this.d2.getDivision2().get(i).setClassement(r.classementCoupeByName(d2.getDivision2().get(i).getNom(), "d2"));
+        }
+        System.err.println("d1 et d2 nationale");
+        for (int i = 0; i < club.getClub().size(); i++) {
+            this.club.getClub().get(i).setClassement(r.classementCoupeByName(club.getClub().get(i).getNom(), "clubs nationals"));
         }
         gagnant = new ArrayList<>();
         liste = new ArrayList<>();
@@ -37,13 +39,14 @@ public class CoupeLigue implements fight {
     }
 
     public void listeEquipe() throws SQLException {
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 10; i++) {
             getListe().add(d1.getDivision1().get(i));
             getListe().add(d2.getDivision2().get(i));
-
             // System.err.println(liste.get(i).getNom());
         }
-
+        for (int i = 0; i < 12; i++) {
+            getListe().add(club.getClub().get(i));
+        }
         //       match(liste);
     }
 
@@ -60,10 +63,9 @@ public class CoupeLigue implements fight {
         test = test / 2;
 
         if (list.size() < 3) {
-            System.out.println("Le gagnant est= " + list.get(0).getNom());
-            JOptionPane jop1;
-            jop1 = new JOptionPane();
-            jop1.showMessageDialog(null, "Le gagnant de la coupe de la Ligue est : " + list.get(0).getNom(), "Message", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("Le gagnant est = " + list.get(0).getNom());
+           
+            JOptionPane.showMessageDialog(null, "Le gagnant de la coupe de la coupe Nationale est : " + list.get(0).getNom(), "Message", JOptionPane.INFORMATION_MESSAGE);
 
             //return list.get(0).getNom();
         } else {
@@ -223,8 +225,8 @@ public class CoupeLigue implements fight {
                 e1.getDeja_joue().add(e2);
                 e2.getDeja_joue().add(e1);
 
-                ArrayList<Equipe> tmpd1 = r.ClassementCoupe(e1.getPays());
-                ArrayList<Equipe> tmpd2 = r.ClassementCoupe(e2.getPays());
+                ArrayList<Equipe> tmpd1 = r.ClassementCoupeNationnale(e1.getPays());
+                ArrayList<Equipe> tmpd2 = r.ClassementCoupeNationnale(e2.getPays());
                 //   division1.clear();
                 //     division1.addAll(tmp);
 //                for (int j = 0; j < tmp.size(); j++) {
@@ -258,3 +260,4 @@ public class CoupeLigue implements fight {
     }
 
 }
+

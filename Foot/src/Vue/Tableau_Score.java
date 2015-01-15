@@ -11,12 +11,16 @@ import javax.swing.border.TitledBorder;
 /**
  *
  * @author Vanessa
+ * Cette classe permet l'affichage des résultat des matchs sous la forme d'un tableau
  */
 public class Tableau_Score extends JPanel implements Observateur {
 
     private JTable table;
     private MonModelTable model;
 
+    /**
+     * Constructeur de la Classe
+     */
     public Tableau_Score() {
         this.setBorder(new TitledBorder("Résultat"));
         this.setSize(new Dimension(400, 100));
@@ -25,6 +29,9 @@ public class Tableau_Score extends JPanel implements Observateur {
         init();
     }
 
+    /**
+     * initalisation des de la JScrollPane nécéssaire à la création du tableau
+     */
     public void init() {
         // model.removeAll();
         JScrollPane scroll = new JScrollPane(table);
@@ -37,8 +44,11 @@ public class Tableau_Score extends JPanel implements Observateur {
         return table;
     }
 
+    /**
+     * fonction permettant la MAJ du tableau des scores
+     */
     @Override
-    public void Update() {
+    public void update() {
         this.removeAll();
         init();
         validate();

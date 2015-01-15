@@ -1,17 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 import Vue.Observateur;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author brice.effantin
- */
+
 public class MonModelTable extends DefaultTableModel implements Observable {
 
     private class Ligne {
@@ -41,10 +34,10 @@ public class MonModelTable extends DefaultTableModel implements Observable {
         super();
         observateur = new ArrayList<>();
     }
-    
-    public void removeAll(){
-        int max=this.getRowCount();
-        for(int i=0;i<max;i++){
+
+    public void removeAll() {
+        int max = this.getRowCount();
+        for (int i = 0; i < max; i++) {
             removeLigne(0);
         }
     }
@@ -115,6 +108,14 @@ public class MonModelTable extends DefaultTableModel implements Observable {
         notifyObs();
     }
 
+    public void removeAllLigne() {
+        for (int i = liste.size() - 1; i > -1; i--) {
+            liste.remove(i);
+            fireTableRowsDeleted(i, i);
+        }
+        notifyObs();
+    }
+
     public void setLigne(int index, String nom, String classement, String pts, String J, String G, String N, String P, String BP, String BC, String Diff) {
         liste.get(index).nom = nom;
         liste.get(index).classement = classement;
@@ -143,7 +144,7 @@ public class MonModelTable extends DefaultTableModel implements Observable {
     @Override
     public void notifyObs() {
         for (Observateur obs : observateur) {
-            obs.Update();
+            obs.update();
         }
     }
 

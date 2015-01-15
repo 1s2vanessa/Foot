@@ -12,13 +12,13 @@ public class Requetes {
 
     private BD data;
 
-    public Requetes() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public Requetes() throws SQLException {
         data = new BD();
     }
 
     public ArrayList<Equipe> getEquipeByPaysAndChampionnat(String pays, String Championnat) throws SQLException {
 
-        String cmd = "SELECT DISTINCT * FROM " + Championnat + " where Pays ='" + pays + "' ORDER BY CLassement";
+        String cmd = "SELECT DISTINCT * FROM `" + Championnat + "` where Pays ='" + pays + "' ORDER BY Classement";
         ResultSet rs = data.link.executeQuery(cmd);
         ArrayList list = new ArrayList();
         while (rs.next()) {
@@ -32,7 +32,7 @@ public class Requetes {
 
     public ArrayList<Equipe> getEquipeByChampionnat(String championnat) throws SQLException {
 
-        String cmd = "SELECT DISTINCT * FROM " + championnat + " ORDER BY CLassement";
+        String cmd = "SELECT DISTINCT * FROM " + championnat + " ORDER BY Classement";
         ResultSet rs = data.link.executeQuery(cmd);
         ArrayList list = new ArrayList();
         while (rs.next()) {
@@ -82,7 +82,6 @@ public class Requetes {
             list.get(j).setClassement(j + 1);
             cmd2 = "UPDATE `" + Championnat + "` SET `Classement`='" + (j + 1) + "' WHERE Nom_Equipe ='" + list.get(j).getNom() + "'";
             data.link.executeUpdate(cmd2);
-//            list.get(j).toString();
         }
         return list;
     }
@@ -119,7 +118,7 @@ public class Requetes {
     }
     
     
-    public ArrayList<Equipe> ClassementCoupeNationnale(String pays) throws SQLException {
+    /*public ArrayList<Equipe> ClassementCoupeNationnale(String pays) throws SQLException {
         //Pour classer les équipes
         String cmd = "SELECT * FROM d1 where Pays ='" + pays + "' ORDER BY Pts DESC";
         String cmd1 = "SELECT * FROM d2 where Pays ='" + pays + "' ORDER BY Pts DESC";
@@ -156,11 +155,11 @@ public class Requetes {
 
         }
         return list;
-    }
+    }*/
     
 
     public int classementCoupeByName(String nom, String Championnat) throws SQLException {
-        String cmd = "SELECT `ClassementCoupe` FROM " + Championnat + " where Nom_Equipe ='" + nom + "'";
+        String cmd = "SELECT `ClassementCoupe` FROM `" + Championnat + "` where Nom_Equipe ='" + nom + "'";
         ResultSet rs = data.link.executeQuery(cmd);
         int resultat = -1;
         while (rs.next()) {
@@ -217,9 +216,20 @@ public class Requetes {
         for (int j = 1; j < i + 1; j++) {
             cmd = "UPDATE `d2` SET `Pts`='0',`J`='0',`G`='0',`N`='0',`P`='0',`BP`='0',`BC`='0',`Diff`='0'";
             data.link.executeUpdate(cmd);
-
-            //System.err.println(j);
         }
+
+        selection = "SELECT * FROM `clubs nationals`";
+        rs = data.link.executeQuery(selection);
+        i = 0;
+        while (rs.next()) {
+            i++;
+        }
+
+        for (int j = 1; j < i + 1; j++) {
+            cmd = "UPDATE `clubs nationals` SET `Pts`='0',`J`='0',`G`='0',`N`='0',`P`='0',`BP`='0',`BC`='0',`Diff`='0'";
+            data.link.executeUpdate(cmd);
+        }
+
     }
 
     public ArrayList<Equipe> dernieresEquipeD1(String pays) throws SQLException {
@@ -237,19 +247,21 @@ public class Requetes {
         return lastEquipe;
     }
 
-    public void switchEquipeD1D2(String pays) throws SQLException {
+    public ArrayList<Equipe> switchEquipeD1D2(String pays) throws SQLException {
         String selectionD1 = "SELECT * FROM d1 where Pays ='" + pays + "' AND Classement > '17' ORDER BY Classement";
         ResultSet rsD1 = data.link.executeQuery(selectionD1);
         ArrayList<Equipe> lastEquipe = new ArrayList<>();
+        ArrayList<Equipe> echange = new ArrayList<>();
         int i = 1;
         int j = 0;
         while (rsD1.next()) {
             lastEquipe.add(new Equipe(i, rsD1.getString("Nom_Equipe"), rsD1.getInt("Pts"), rsD1.getInt("J"), rsD1.getInt("G"), rsD1.getInt("N"), rsD1.getInt("P"), rsD1.getInt("BP"), rsD1.getInt("BC"), rsD1.getInt("Diff"), rsD1.getString("Pays"), "d1"));
             System.err.println(lastEquipe.get(j).toString());
+
             j++;
             i++;
         }
-
+        echange.addAll(lastEquipe);
         String selectionD2 = "SELECT * FROM d2 where Pays ='" + pays + "' AND Classement < '4' ORDER BY Classement";
         ResultSet rsD2 = data.link.executeQuery(selectionD2);
         ArrayList<Equipe> firstEquipe = new ArrayList<>();
@@ -261,7 +273,7 @@ public class Requetes {
             j++;
             i++;
         }
-
+        echange.addAll(firstEquipe);
         //MAJ D1
         String majD1, majD2;
 
@@ -277,6 +289,7 @@ public class Requetes {
             data.link.executeUpdate(majD2);
 
         }
+        return echange;
     }
 
     public void envoiEuropa(Equipe e) throws SQLException {
@@ -327,4 +340,42 @@ public class Requetes {
 //              
 //          }
 //    }
+    public ArrayList<Equipe> ClassementCoupeNationnale(String pays) throws SQLException {
+        //Pour classer les équipes
+        String cmd = "SELECT * FROM d1 where Pays ='" + pays + "' ORDER BY Pts DESC";
+        String cmd1 = "SELECT * FROM d2 where Pays ='" + pays + "' ORDER BY Pts DESC";
+        String cmd4 = "SELECT * FROM `clubs nationals` where Pays ='" + pays + "' ORDER BY Pts DESC";
+        ResultSet rs = data.link.executeQuery(cmd);
+        ArrayList<Equipe> list = new ArrayList();
+        int i = 1;
+        String cmd2, cmd3;
+        while (rs.next()) {
+            list.add(new Equipe(i, rs.getString("Nom_Equipe"), rs.getInt("Pts"), rs.getInt("J"), rs.getInt("G"), rs.getInt("N"), rs.getInt("P"), rs.getInt("BP"), rs.getInt("BC"), rs.getInt("Diff"), rs.getString("Pays"), "d1"));
+            i++;
+        }
+
+        ResultSet rs2 = data.link.executeQuery(cmd1);
+        while (rs2.next()) {
+            list.add(new Equipe(i, rs2.getString("Nom_Equipe"), rs2.getInt("Pts"), rs2.getInt("J"), rs2.getInt("G"), rs2.getInt("N"), rs2.getInt("P"), rs2.getInt("BP"), rs2.getInt("BC"), rs2.getInt("Diff"), rs2.getString("Pays"), "d2"));
+
+            i++;
+        }
+
+        ResultSet rs3 = data.link.executeQuery(cmd4);
+        while (rs3.next()) {
+            list.add(new Equipe(i, rs3.getString("Nom_Equipe"), rs3.getInt("Pts"), rs3.getInt("J"), rs3.getInt("G"), rs3.getInt("N"), rs3.getInt("P"), rs3.getInt("BP"), rs3.getInt("BC"), rs3.getInt("Diff"), rs3.getString("Pays"), "clubs nationals"));
+
+            i++;
+        }
+
+        for (int j = 0; j < list.size(); j++) {
+            list.get(j).setClassement(j + 1);
+            //chercher dans la d1
+            cmd2 = "UPDATE `" + list.get(j).getType() + "` SET `ClassementCoupe`='" + (j + 1) + "' WHERE Nom_Equipe ='" + list.get(j).getNom() + "'";
+            data.link.executeUpdate(cmd2);
+            //chercher dans la d2
+
+        }
+        return list;
+    }
 }

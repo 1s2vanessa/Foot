@@ -6,13 +6,12 @@
 
 package Modele;
 
-import Modele.Equipe;
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
  *
- * @author Vanessa
+ * @author Bilal
  */
 
 // Celui qui dépasse d'une huitre, te dépassse d'une ruise" 

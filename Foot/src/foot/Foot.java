@@ -6,11 +6,12 @@
 
 package foot;
 
-import Vue.MaFenetre;
+
 import java.sql.SQLException;
 import Modele.D1;
 import Modele.D2;
 import Modele.LdC;
+import Modele.Requetes;
 /**
  *
  * @author Vanessa
@@ -18,7 +19,10 @@ import Modele.LdC;
 public class Foot {
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-       MaFenetre fen = new MaFenetre();
+      
+        Requetes r = new Requetes();
+        r.RAZTotale();
+        MaFenetre fen = new MaFenetre();
        fen.setVisible(true);
        
         D1 div1= new D1();
