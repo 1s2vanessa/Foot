@@ -20,12 +20,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 /**
  *
  * @author Vanessa
- * 
+ *
  * Cette classe est la fenetre qui contient l'interface graphique
  */
 public final class MaFenetre extends JFrame implements ActionListener {
@@ -46,32 +47,32 @@ public final class MaFenetre extends JFrame implements ActionListener {
     private GestionManuelle gestionManuelle;
     private int manuSemi;
 
-    
-    
     /**
      * Constructeur de la classe
+     *
      * @throws ClassNotFoundException
      * @throws InstantiationException
      * @throws IllegalAccessException
-     * @throws SQLException 
+     * @throws SQLException
      */
     public MaFenetre() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         mmt = new MonModelTable();
         r = new Requetes();
         this.setTitle("Football Manager");// titre fenetre
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//comportement de la fenetre : l'appli se termine quand on ferme la fenetre
+       
+        this.setBestLookAndFeelAvailable();
         init(); //initialisation du panneau
 
     }
 
-    
-    
     /**
      * Permet l'initialisation des éléments contenus dans la fenetre
+     *
      * @throws ClassNotFoundException
      * @throws InstantiationException
      * @throws IllegalAccessException
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         RAZtout();
@@ -113,14 +114,13 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    
-    
     /**
-     * Cette fonction permet l'affichage d'un panneau sur la fenetre
-     * qui permet à l'utilisateur de choisir une action parmi 3 :
-     * automatique : les matchs sont générés automatiquement
-     * semi-automatique : l'utilisateur doit juste choisir les équipes qui jouent un match et les résultats sont générés aléatoirement
-     * manuel : l'utilisateur choisit les équipes et les scores de chaques équipes
+     * Cette fonction permet l'affichage d'un panneau sur la fenetre qui permet
+     * à l'utilisateur de choisir une action parmi 3 : automatique : les matchs
+     * sont générés automatiquement semi-automatique : l'utilisateur doit juste
+     * choisir les équipes qui jouent un match et les résultats sont générés
+     * aléatoirement manuel : l'utilisateur choisit les équipes et les scores de
+     * chaques équipes
      */
     public void manuAuto() {
         pano.setBorder(new TitledBorder("Choix déroulement"));
@@ -140,11 +140,11 @@ public final class MaFenetre extends JFrame implements ActionListener {
         this.revalidate();
 
     }
-    
 
     /**
      * permet la gestion des interactions avec la fenetre
-     * @param ae 
+     *
+     * @param ae
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -229,13 +229,11 @@ public final class MaFenetre extends JFrame implements ActionListener {
         }
 
     }
-    
-    
-    
-    
+
     /**
-     * Cette fonction permet de gérer les matchs manuellement en utilisant la fonction fightManuel de la D1 ou D2
-     * et permet MAJ de la BD via la fonction fightManuel
+     * Cette fonction permet de gérer les matchs manuellement en utilisant la
+     * fonction fightManuel de la D1 ou D2 et permet MAJ de la BD via la
+     * fonction fightManuel
      */
     public void gestionManuelleMAJbd() {
         Equipe e1 = null, e2 = null;
@@ -284,8 +282,6 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    
-    
     /**
      * initalisation de div1Coupe, div2Coupe et clubCoup
      */
@@ -311,11 +307,10 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    
-    
     /**
      * Affiche le panneau qui contient les choix du championnat et du pays
-     * @throws SQLException 
+     *
+     * @throws SQLException
      */
     public void choixAffichePano() throws SQLException {
         //si une division est choisie alors l'utilisateur à le choix entre auto, semiAuto 
@@ -339,11 +334,11 @@ public final class MaFenetre extends JFrame implements ActionListener {
         this.pack();
     }
 
-    
-    
     /**
-     * Une fonction de génération de matchs automatique sera appelé en fonction du chmpionnat choisit
-     * @throws SQLException 
+     * Une fonction de génération de matchs automatique sera appelé en fonction
+     * du chmpionnat choisit
+     *
+     * @throws SQLException
      */
     public void choixAffiche() throws SQLException {
         if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
@@ -355,13 +350,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
         }
     }
 
-    
-    
-    
     /**
-     * génére les matchs automatique de la Coupe de la Ligue et MAJ du tableau des scores
+     * génére les matchs automatique de la Coupe de la Ligue et MAJ du tableau
+     * des scores
+     *
      * @param pays indique le pays selectionné
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void afficheCoupeLigue(String pays) throws SQLException {
 
@@ -372,12 +366,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
         affichage_tableau();
     }
 
-    
-    
     /**
-     * génére les matchs automatique de la Coupe Nationale et MAJ du tableau des scores
+     * génére les matchs automatique de la Coupe Nationale et MAJ du tableau des
+     * scores
+     *
      * @param pays indique le pays selectionné
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void afficheCoupeNationale(String pays) throws SQLException {
 
@@ -388,13 +382,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
         affichage_tableau();
     }
 
-    
-    
-    
     /**
-     * permet la MAJ du tableau des scores pour la D1 suite aux matchs automatiques (utilisation fonction récursive match())
-     * @param pays 
-     * @throws SQLException 
+     * permet la MAJ du tableau des scores pour la D1 suite aux matchs
+     * automatiques (utilisation fonction récursive match())
+     *
+     * @param pays
+     * @throws SQLException
      */
     public void afficheD1matchAuto(String pays) throws SQLException {
 
@@ -417,12 +410,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    
-    
-     /**
-     * permet la MAJ du tableau des scores pour la D2 suite aux matchs automatiques(utilisation fonction récursive match())
-     * @param pays 
-     * @throws SQLException 
+    /**
+     * permet la MAJ du tableau des scores pour la D2 suite aux matchs
+     * automatiques(utilisation fonction récursive match())
+     *
+     * @param pays
+     * @throws SQLException
      */
     public void afficheD2matchAuto(String pays) throws SQLException {
 
@@ -444,11 +437,9 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    
-    
     /**
-     * 
-     * @throws SQLException 
+     *
+     * @throws SQLException
      */
     public void panoEquipe() throws SQLException {
 
@@ -481,11 +472,9 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
-    
-    
     /**
-     * 
-     * @throws SQLException 
+     *
+     * @throws SQLException
      */
     public void affichage_tableau() throws SQLException {
         this.remove(tableauScore);
@@ -533,8 +522,8 @@ public final class MaFenetre extends JFrame implements ActionListener {
                 } else if (manuSemi == 2) { //Si en mode manuel
 
                     ((MonModelTable) tableauScore.getTable().getModel()).removeAllLigne();
-                    for (int i = 0; i < div1Coupe.getDivision1().size(); i++) {
-                        ((MonModelTable) tableauScore.getTable().getModel()).addLigne(div1Coupe.getDivision1().get(i).getNom(), Integer.toString(div1Coupe.getDivision1().get(i).getClassement()), Integer.toString(div1Coupe.getDivision1().get(i).getPts()), Integer.toString(div1Coupe.getDivision1().get(i).getJ()), Integer.toString(div1Coupe.getDivision1().get(i).getG()), Integer.toString(div1Coupe.getDivision1().get(i).getN()), Integer.toString(div1Coupe.getDivision1().get(i).getP()), Integer.toString(div1Coupe.getDivision1().get(i).getBP()), Integer.toString(div1Coupe.getDivision1().get(i).getBC()), Integer.toString(div1Coupe.getDivision1().get(i).getDiff()));
+                    for (int i = 0; i < div2Coupe.getDivision2().size(); i++) {
+                        ((MonModelTable) tableauScore.getTable().getModel()).addLigne(div2Coupe.getDivision2().get(i).getNom(), Integer.toString(div2Coupe.getDivision2().get(i).getClassement()), Integer.toString(div2Coupe.getDivision2().get(i).getPts()), Integer.toString(div2Coupe.getDivision2().get(i).getJ()), Integer.toString(div2Coupe.getDivision2().get(i).getG()), Integer.toString(div2Coupe.getDivision2().get(i).getN()), Integer.toString(div2Coupe.getDivision2().get(i).getP()), Integer.toString(div2Coupe.getDivision2().get(i).getBP()), Integer.toString(div2Coupe.getDivision2().get(i).getBC()), Integer.toString(div2Coupe.getDivision2().get(i).getDiff()));
                     }
                 }
                 //MAJ de l'affichage du tableau
@@ -643,11 +632,13 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
-    
     /**
-     * Permet la remise à zero des buts, nb de parties jouées ... de la base de données pour un pays et un chmapionnat
+     * Permet la remise à zero des buts, nb de parties jouées ... de la base de
+     * données pour un pays et un chmapionnat
+     *
      * @param pays : pays concerné par la remise à zéro des buts ....
-     * @param championnat : championnat correspond à la table a mettre les valeurs à jour
+     * @param championnat : championnat correspond à la table a mettre les
+     * valeurs à jour
      */
     public void RAZ(String pays, String championnat) {
 
@@ -670,9 +661,9 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
-    
     /**
-     * Permet la remise à zero des buts, nb de parties jouées ... de la base de données pour toutes les équipes
+     * Permet la remise à zero des buts, nb de parties jouées ... de la base de
+     * données pour toutes les équipes
      */
     public void RAZtout() {
         try {
@@ -686,7 +677,19 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
-    
-    
+    public static void setBestLookAndFeelAvailable() {
+        String system_lf = UIManager.getSystemLookAndFeelClassName().toLowerCase();
+        if (system_lf.contains("CDE/Motif")) {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            } catch (Exception e) {
+            }
+        } else {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+            }
+        }
+    }
 
 }
