@@ -3,6 +3,7 @@ package Modele;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,7 +33,7 @@ public class Requetes {
 
     public ArrayList<Equipe> getEquipeByChampionnat(String championnat) throws SQLException {
 
-        String cmd = "SELECT DISTINCT * FROM " + championnat + " ORDER BY Classement";
+        String cmd = "SELECT DISTINCT * FROM `" + championnat + "` ORDER BY Classement";
         ResultSet rs = data.link.executeQuery(cmd);
         ArrayList list = new ArrayList();
         while (rs.next()) {
@@ -64,7 +65,7 @@ public class Requetes {
 
     public ArrayList<Equipe> Classement(String pays, String Championnat) throws SQLException {
         //Pour classer les équipes
-        String cmd = "SELECT * FROM " + Championnat + " where Pays ='" + pays + "' ORDER BY Pts DESC";
+        String cmd = "SELECT * FROM `" + Championnat + "` where Pays ='" + pays + "' ORDER BY Pts DESC";
         ResultSet rs = data.link.executeQuery(cmd);
         ArrayList<Equipe> list = new ArrayList();
         int i = 1;
@@ -84,6 +85,17 @@ public class Requetes {
             data.link.executeUpdate(cmd2);
         }
         return list;
+    }
+
+    public ArrayList<Equipe> MAJClassement(ArrayList<Equipe> tmp) throws SQLException {
+        String cmd;
+        ArrayList<Equipe> maj= new ArrayList<>();
+        for (int i = 0; i < tmp.size(); i++) {
+            cmd = "UPDATE `" + tmp.get(i).getType() + "` SET `Pts`='" + tmp.get(i).getPts() + "',`J`='" + tmp.get(i).getJ() + "',`G`='" + tmp.get(i).getG() + "',`N`='" + tmp.get(i).getN() + "',`P`='" + tmp.get(i).getP() + "',`BP`='" + tmp.get(i).getBP() + "',`BC`='" + tmp.get(i).getBC() + "',`Diff`='" + tmp.get(i).getDiff() + "' WHERE Nom_Equipe ='" + tmp.get(i).getNom() + "'";
+            data.link.executeUpdate(cmd);
+        }
+        
+        return maj;
     }
 
     public ArrayList<Equipe> ClassementCoupe(String pays) throws SQLException {
@@ -116,6 +128,20 @@ public class Requetes {
         }
         return list;
     }
+    
+    public ArrayList<Equipe> ClassementLDCeuropa(String Championnat) throws SQLException {
+        //Pour classer les équipes
+        String cmd = "SELECT * FROM `"+ Championnat+"` where ORDER BY Pts DESC";
+        ResultSet rs = data.link.executeQuery(cmd);
+        ArrayList<Equipe> list = new ArrayList();
+        int i = 1;
+        while (rs.next()) {
+            list.add(new Equipe(i, rs.getString("Nom_Equipe"), rs.getInt("Pts"), rs.getInt("J"), rs.getInt("G"), rs.getInt("N"), rs.getInt("P"), rs.getInt("BP"), rs.getInt("BC"), rs.getInt("Diff"), rs.getString("Pays"), "d1"));
+            i++;
+        }
+
+        return list;
+    }
 
     public int classementCoupeByName(String nom, String Championnat) throws SQLException {
         String cmd = "SELECT `ClassementCoupe` FROM `" + Championnat + "` where Nom_Equipe ='" + nom + "'";
@@ -135,17 +161,28 @@ public class Requetes {
 
         while (rs.next()) {
             i++;
-            System.err.println(i);
+            //System.err.println(i);
         }
 
         for (int j = 1; j < i + 1; j++) {
             cmd = "UPDATE `" + championnat + "` SET `Pts`='0',`J`='0',`G`='0',`N`='0',`P`='0',`BP`='0',`BC`='0',`Diff`='0' WHERE Pays= '" + pays + "' AND Classement ='" + j + "'";
             data.link.executeUpdate(cmd);
 
-            System.err.println(j);
+            // System.err.println(j);
         }
+        
+        JOptionPane.showMessageDialog(null, "Fin de vidage table : "+championnat+" pour : "+pays, "Message", JOptionPane.INFORMATION_MESSAGE);
+
     }
 
+    public void truncateBD(String championnat) throws SQLException{
+        String cmd = "TRUNCATE TABLE `"+championnat+"`";
+        data.link.executeUpdate(cmd);
+         JOptionPane.showMessageDialog(null, "Fin de vidage table : "+championnat, "Message", JOptionPane.INFORMATION_MESSAGE);
+
+    }
+    
+    
     public void RAZTotale() throws SQLException {
         int i = 0;
         String cmd;
@@ -189,6 +226,14 @@ public class Requetes {
             data.link.executeUpdate(cmd);
         }
 
+        cmd = "TRUNCATE TABLE `champions league`";
+        data.link.executeUpdate(cmd);
+
+         cmd = "TRUNCATE TABLE `europa league`";
+        data.link.executeUpdate(cmd);
+        
+        JOptionPane.showMessageDialog(null, "Fin de nettoyage des tables", "Message", JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     public ArrayList<Equipe> dernieresEquipeD1(String pays) throws SQLException {
@@ -199,7 +244,7 @@ public class Requetes {
         int j = 0;
         while (rs.next()) {
             lastEquipe.add(new Equipe(i, rs.getString("Nom_Equipe"), rs.getInt("Pts"), rs.getInt("J"), rs.getInt("G"), rs.getInt("N"), rs.getInt("P"), rs.getInt("BP"), rs.getInt("BC"), rs.getInt("Diff"), rs.getString("Pays"), "d1"));
-            System.err.println(lastEquipe.get(j).toString());
+            //System.err.println(lastEquipe.get(j).toString());
             j++;
             i++;
         }
@@ -215,7 +260,7 @@ public class Requetes {
         int j = 0;
         while (rsD1.next()) {
             lastEquipe.add(new Equipe(i, rsD1.getString("Nom_Equipe"), rsD1.getInt("Pts"), rsD1.getInt("J"), rsD1.getInt("G"), rsD1.getInt("N"), rsD1.getInt("P"), rsD1.getInt("BP"), rsD1.getInt("BC"), rsD1.getInt("Diff"), rsD1.getString("Pays"), "d1"));
-            System.err.println(lastEquipe.get(j).toString());
+//            System.err.println(lastEquipe.get(j).toString());
 
             j++;
             i++;
@@ -228,7 +273,7 @@ public class Requetes {
         j = 0;
         while (rsD2.next()) {
             firstEquipe.add(new Equipe(i, rsD2.getString("Nom_Equipe"), rsD2.getInt("Pts"), rsD2.getInt("J"), rsD2.getInt("G"), rsD2.getInt("N"), rsD2.getInt("P"), rsD2.getInt("BP"), rsD2.getInt("BC"), rsD2.getInt("Diff"), rsD2.getString("Pays"), "d2"));
-            System.err.println(firstEquipe.get(j).toString());
+//            System.err.println(firstEquipe.get(j).toString());
             j++;
             i++;
         }
@@ -259,7 +304,7 @@ public class Requetes {
         while (rs.next()) {
             row++;
         }
-        System.err.println(row);
+//        System.err.println(row);
         String ajout = "INSERT INTO `europa league` (Classement, Nom_Equipe, Pts, J, G, N, P, BP, BC, Diff, Pays) VALUES ('" + row + "' ,'" + e.getNom() + "', 0, 0, 0, 0, 0, 0, 0, 0, '" + e.getPays() + "'  )";
         data.link.executeUpdate(ajout);
     }
@@ -272,7 +317,7 @@ public class Requetes {
         while (rs.next()) {
             row++;
         }
-        System.err.println(row);
+//        System.err.println(row);
         String ajout = "INSERT INTO `champions league` (Classement, Nom_Equipe, Pts, J, G, N, P, BP, BC, Diff, Pays) VALUES ('" + row + "' ,'" + e.getNom() + "', 0, 0, 0, 0, 0, 0, 0, 0, '" + e.getPays() + "'  )";
         data.link.executeUpdate(ajout);
     }

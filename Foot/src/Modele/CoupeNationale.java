@@ -44,7 +44,7 @@ public class CoupeNationale implements fight {
             getListe().add(d2.getDivision2().get(i));
             // System.err.println(liste.get(i).getNom());
         }
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < club.getClub().size(); i++) {
             getListe().add(club.getClub().get(i));
         }
         //       match(liste);
@@ -55,8 +55,12 @@ public class CoupeNationale implements fight {
         System.out.println();
         if (test != 1) {
             System.out.println("******* 1/" + test + " de finale ********");
+            JOptionPane.showMessageDialog(null, "******* 1/" + test + " de finale ********", "Message", JOptionPane.INFORMATION_MESSAGE);
+
         } else {
             System.out.println("******** FINALE ********");
+            
+            JOptionPane.showMessageDialog(null, "******* FINALE ********", "Message", JOptionPane.INFORMATION_MESSAGE);
         }
         System.out.println();
 

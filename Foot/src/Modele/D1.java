@@ -6,9 +6,10 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Vanessa 
- * 
- * La classe D1 permet la création d'une liste d'équipe appartenant à la division1
+ * @author Vanessa
+ *
+ * La classe D1 permet la création d'une liste d'équipe appartenant à la
+ * division1
  */
 public class D1 implements fight, fightManuel {
 
@@ -100,8 +101,9 @@ public class D1 implements fight, fightManuel {
     }
 
     /**
-     * permet de générer des résultats aléatoires de match entre 2 équipes et 
+     * permet de générer des résultats aléatoires de match entre 2 équipes et
      * permet la MAJ de la BD
+     *
      * @param e1 correspond à l'équipe qui va jouer contre e2
      * @param e2 correspond à l'équipe qui va jouer contre e1
      * @throws SQLException
@@ -225,18 +227,24 @@ public class D1 implements fight, fightManuel {
 //        } catch (IllegalAccessException ex) {
 //            Logger.getLogger(D1.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+
+        finD1D2switch();
     }
 
-    
     /**
      * Cette fonction permet de vérifié si la D1 est finie
-     * @throws SQLException 
+     *
+     * @throws SQLException
      */
-    public void finD1() throws SQLException {
+    public void finD1D2switch() throws SQLException {
 
-        if (r.finSaison("d1", pays) == true) {
-            Equipe tmp = Barrage();
-            tmp.toString();
+        if (r.finSaison("d1", pays) == true && r.finSaison("d2", pays) == true) {
+          //  Equipe tmp = Barrage();
+            // tmp.toString();
+
+            JOptionPane.showMessageDialog(null, "Fin de D1 et D2 échange des 3 dernières équipes de D1 avec les 3 premières de D2 pour : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
+            
+
             r.switchEquipeD1D2(pays);
         }
     }
@@ -250,15 +258,19 @@ public class D1 implements fight, fightManuel {
     }
 
     /**
-     * Fonction récursive qui permet de générer tous les matchs de la D1 automatiquement
+     * Fonction récursive qui permet de générer tous les matchs de la D1
+     * automatiquement
+     *
      * @param nbMatch correspond au nombre de match
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void match(int nbMatch) throws SQLException {
         if (nbMatch == 19) {
             JOptionPane.showMessageDialog(null, "Fin de D1 pour  : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
 
         } else {
+            JOptionPane.showMessageDialog(null, "Equipe " + nbMatch + " qui affronte les autres : " + division1.get(nbMatch).getNom(), "Message", JOptionPane.INFORMATION_MESSAGE);
+
             for (int i = 0; i < division1.size(); i++) {
                 if (nbMatch != i) {
                     fight(division1.get(i), division1.get(nbMatch));
@@ -271,7 +283,9 @@ public class D1 implements fight, fightManuel {
     }
 
     /**
-     * permet le match entre 2 équipes et la MAJ de la BD avec les paramètres de la fonction
+     * permet le match entre 2 équipes et la MAJ de la BD avec les paramètres de
+     * la fonction
+     *
      * @param e1 correspond à l'équipe qui va jouer contre e2
      * @param e2 correspond à l'équipe qui va jouer contre e1
      * @param e1BP correspond au nombre de buts marqués par e1

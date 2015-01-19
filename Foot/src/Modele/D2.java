@@ -40,7 +40,7 @@ public class D2 implements fight,fightManuel {
     public D2() throws SQLException {
         division2 = new ArrayList<>();
         r = new Requetes();
-        division2 = r.getEquipeByChampionnat("d1");
+        division2 = r.getEquipeByChampionnat("d2");
         System.out.println(division2.size());
     }
 
@@ -200,9 +200,27 @@ public class D2 implements fight,fightManuel {
             }
         }
          // r.envoiEuropa(e2);
-        // echangeD1D2();
+     finD1D2switch();
     }
 
+    /**
+     * Cette fonction permet de vérifié si la D1 est finie
+     *
+     * @throws SQLException
+     */
+    public void finD1D2switch() throws SQLException {
+
+        if (r.finSaison("d1", pays) == true && r.finSaison("d2", pays) == true) {
+          //  Equipe tmp = Barrage();
+            // tmp.toString();
+
+            JOptionPane.showMessageDialog(null, "Fin de D1 et D2 échange des 3 dernières équipes de D1 avec les 3 premières de D2 pour : " + pays, "Message", JOptionPane.INFORMATION_MESSAGE);
+            
+
+            r.switchEquipeD1D2(pays);
+        }
+    }
+    
     public ArrayList<Equipe> getDivision2() {
         return division2;
     }

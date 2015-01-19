@@ -18,8 +18,8 @@ import javax.swing.JOptionPane;
  */
 
 // Celui qui dépasse d'une huitre, te dépassse d'une ruise" 
-public class LdC implements fight{
-    private ArrayList<Equipe> liste_LDC ;
+public class Europa implements fight{
+    private ArrayList<Equipe> liste_Europa ;
     private ArrayList<Equipe> groupe1 ;
     private ArrayList<Equipe> groupe2 ;
     private ArrayList<Equipe> groupe3 ;
@@ -38,15 +38,15 @@ public class LdC implements fight{
     
     private Requetes r;
 //
-//    public LdC(ArrayList<Equipe> liste_D1, ArrayList<Equipe> liste_D2 ) 
+//    public Europa(ArrayList<Equipe> liste_D1, ArrayList<Equipe> liste_D2 ) 
 //    {
-//        liste_LDC=new ArrayList<>();
+//        liste_Europa=new ArrayList<>();
 //       
 //        for (int i=0;i<liste_D1.size();i++) // à tester
 //        {
 //            if (liste_D1.get(i)!=null)
 //            {
-//                liste_LDC.add(liste_D1.get(i));
+//                liste_Europa.add(liste_D1.get(i));
 //            }
 //            
 //        }
@@ -55,16 +55,16 @@ public class LdC implements fight{
 //        {
 //            if (liste_D2.get(i)!=null)
 //            {
-//                 liste_LDC.add(liste_D2.get(i)); 
+//                 liste_Europa.add(liste_D2.get(i)); 
 //            }
 //        }  
 //    }
 //   
     
     
-    public LdC(ArrayList<Equipe> liste_D1, ArrayList<Equipe> liste_D2 ) throws SQLException // Les deux array list sont de 16 equipes normalement 
+    public Europa(ArrayList<Equipe> liste_D1 ) throws SQLException // Les deux array list sont de 16 equipes normalement 
     {   
-        liste_LDC=new ArrayList<>();
+        liste_Europa=new ArrayList<>();
         groupe1= new ArrayList<>();
         groupe2= new ArrayList<>();
         groupe3= new ArrayList<>();
@@ -88,23 +88,14 @@ public class LdC implements fight{
         {
             if (liste_D1.get(i)!=null)
             {
-                liste_LDC.add(liste_D1.get(i));
-                 r.envoiLDC(liste_D1.get(i)); // envoi l'equipe dans la database
+                liste_Europa.add(liste_D1.get(i));
+                 r.envoiEuropa(liste_D1.get(i)); // envoi l'equipe dans la database
             }
             
             
         }
-        
-        for (int i=0;i<liste_D2.size();i++)
-        {
-            if (liste_D2.get(i)!=null)
-            {
-                 liste_LDC.add(liste_D2.get(i)); 
-                  r.envoiLDC(liste_D2.get(i));
-            }
-           
-        }
-       
+          
+      
         
         
     }
@@ -117,35 +108,35 @@ public class LdC implements fight{
         
         for (int i=0;i<4;i++)
         {
-            groupe1.add(liste_LDC.get(i));
+            groupe1.add(liste_Europa.get(i));
         }
         for (int i=4;i<8;i++)
         {
-            groupe2.add(liste_LDC.get(i));
+            groupe2.add(liste_Europa.get(i));
         }
         for (int i=8;i<12;i++)
         {
-            groupe3.add(liste_LDC.get(i));
+            groupe3.add(liste_Europa.get(i));
         }
          for (int i=12;i<16;i++)
         {
-            groupe4.add(liste_LDC.get(i));
+            groupe4.add(liste_Europa.get(i));
         }
           for (int i=16;i<20;i++)
         {
-            groupe5.add(liste_LDC.get(i));
+            groupe5.add(liste_Europa.get(i));
         }
            for (int i=20;i<24;i++)
         {
-            groupe6.add(liste_LDC.get(i));
+            groupe6.add(liste_Europa.get(i));
         }
             for (int i=24;i<28;i++)
         {
-            groupe7.add(liste_LDC.get(i));
+            groupe7.add(liste_Europa.get(i));
         }
                 for (int i=28;i<32;i++)
         {
-            groupe8.add(liste_LDC.get(i));
+            groupe8.add(liste_Europa.get(i));
         }
     }
     
@@ -154,51 +145,51 @@ public class LdC implements fight{
         
         for (int i=0;i<4;i++)
         {
-            groupe1.add(liste_LDC.get(i));
+            groupe1.add(liste_Europa.get(i));
         }
         for (int i=4;i<8;i++)
         {
-            groupe2.add(liste_LDC.get(i));
+            groupe2.add(liste_Europa.get(i));
         }
         for (int i=8;i<12;i++)
         {
-            groupe3.add(liste_LDC.get(i));
+            groupe3.add(liste_Europa.get(i));
         }
          for (int i=12;i<16;i++)
         {
-            groupe4.add(liste_LDC.get(i));
+            groupe4.add(liste_Europa.get(i));
         }
           for (int i=16;i<20;i++)
         {
-            groupe5.add(liste_LDC.get(i));
+            groupe5.add(liste_Europa.get(i));
         }
            for (int i=20;i<24;i++)
         {
-            groupe6.add(liste_LDC.get(i));
+            groupe6.add(liste_Europa.get(i));
         }
             for (int i=24;i<28;i++)
         {
-            groupe7.add(liste_LDC.get(i));
+            groupe7.add(liste_Europa.get(i));
         }
             for (int i=28;i<32;i++)
         {
-            groupe8.add(liste_LDC.get(i));
+            groupe8.add(liste_Europa.get(i));
         }
             for (int i=28;i<32;i++)
         {
-            groupe9.add(liste_LDC.get(i));
+            groupe9.add(liste_Europa.get(i));
         }
             for (int i=32;i<36;i++)
         {
-            groupe10.add(liste_LDC.get(i));
+            groupe10.add(liste_Europa.get(i));
         }
             for (int i=36;i<44;i++)
         {
-            groupe11.add(liste_LDC.get(i));
+            groupe11.add(liste_Europa.get(i));
         }
             for (int i=44;i<48;i++)
         {
-            groupe12.add(liste_LDC.get(i));
+            groupe12.add(liste_Europa.get(i));
         }
     }
     
@@ -310,8 +301,8 @@ public class LdC implements fight{
         }
     }
 
-    public ArrayList<Equipe> getListe_LDC() {
-        return liste_LDC;
+    public ArrayList<Equipe> getListe_Europa() {
+        return liste_Europa;
     }
     
 
@@ -438,27 +429,22 @@ public class LdC implements fight{
 
                     System.err.println("Gagnante : " + e2.getNom());
                 }
-            r.MAJBd(e1, "champions league");
-            r.MAJBd(e2, "champions league");
+            r.MAJBd(e1, "europa league");
+            r.MAJBd(e2, "europa league");
             e1.getDeja_joue().add(e2);
             e2.getDeja_joue().add(e1);
 
               
 
-          ArrayList<Equipe> tmp =  r.Classement(e1.getPays(), "champions league");
+          ArrayList<Equipe> tmp =  r.Classement(e1.getPays(), "europa league");
          //   division2.clear();
              //     division2.addAll(tmp);
                 for (int j = 0; j < tmp.size(); j++) {
-                    for (int i = 0; i < this.liste_LDC.size(); i++) {
-                        if (this.liste_LDC.get(i).getNom().equals(tmp.get(j).getNom())) {
-                            this.liste_LDC.get(i).setClassement(tmp.get(j).getClassement());
+                    for (int i = 0; i < this.liste_Europa.size(); i++) {
+                        if (this.liste_Europa.get(i).getNom().equals(tmp.get(j).getNom())) {
+                            this.liste_Europa.get(i).setClassement(tmp.get(j).getClassement());
                         }
 
-//                    if (division2.contains(e1)) {
-//                        division2.get(i).setDeja_joue(e1.getDeja_joue());
-//                    } else if (division2.get(i).getNom().equals(e2.getNom())) {
-//                        division2.get(i).setDeja_joue(e2.getDeja_joue());
-//                    }
                     }
                 }
                 
@@ -511,7 +497,7 @@ public class LdC implements fight{
       public Equipe get_gagnant () //à utiliser apres melange_winner_looser
       {
           
-          JOptionPane.showMessageDialog(null,"Le gagnant de la league des champions est : "+winner.get(0).getNom()+" !","message",JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog(null,"Le gagnant de l'Europa league est : "+winner.get(0).getNom()+" !","message",JOptionPane.INFORMATION_MESSAGE);
           return winner.get(0);
           
       }

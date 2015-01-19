@@ -51,9 +51,13 @@ public class CoupeLigue implements fight {
 
         System.out.println();
         if (test != 1) {
-            System.out.println("******* 1/" + test + " de finale ********");
+           System.out.println("******* 1/" + test + " de finale ********");
+            JOptionPane.showMessageDialog(null, "******* 1/" + test + " de finale ********", "Message", JOptionPane.INFORMATION_MESSAGE);
+
         } else {
             System.out.println("******** FINALE ********");
+            
+            JOptionPane.showMessageDialog(null, "******* FINALE ********", "Message", JOptionPane.INFORMATION_MESSAGE);
         }
         System.out.println();
 

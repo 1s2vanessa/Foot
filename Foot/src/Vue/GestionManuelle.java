@@ -5,6 +5,7 @@
  */
 package Vue;
 
+import Controlleur.ControleurManuel;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -35,6 +36,7 @@ public class GestionManuelle extends JDialog implements ActionListener {
     private String pays, championnat;
     private JPanel info = new JPanel();
     private GridBagConstraints contraintes;
+    private ControleurManuel controleur;
     
     
     /**
@@ -60,6 +62,7 @@ public class GestionManuelle extends JDialog implements ActionListener {
      * @throws SQLException 
      */
     public void init() throws SQLException {
+        controleur= new ControleurManuel();
         panoEquipe = new Panno_Equipe(pays, championnat);
         panoEquipe.getValiderEquipe().setVisible(false);
         this.add(panoEquipe, BorderLayout.NORTH);
@@ -223,6 +226,14 @@ public class GestionManuelle extends JDialog implements ActionListener {
      */
     public JButton getValider() {
         return valider;
+    }
+
+    /**
+     * Permet de récupérer le controleur
+     * @return 
+     */
+    public ControleurManuel getControleur() {
+        return controleur;
     }
     
     
