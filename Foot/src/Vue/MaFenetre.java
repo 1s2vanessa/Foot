@@ -78,6 +78,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
      */
     public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         RAZtout();
+        
         //menu
         barreMenu = new JMenuBar();
         menu1 = new JMenu("Division");
@@ -128,11 +129,13 @@ public final class MaFenetre extends JFrame implements ActionListener {
         nouvelleSaison.addActionListener(this);
         eu.addActionListener(this);
         cham.addActionListener(this);
-       // nation.addActionListener(this);
+        // nation.addActionListener(this);
         // lig.addActionListener(this);
 
     }
 
+    
+    
     /**
      * Cette fonction permet l'affichage d'un panneau sur la fenetre qui permet
      * à l'utilisateur de choisir une action parmi 3 : automatique : les matchs
@@ -160,6 +163,8 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
     /**
      * permet la gestion des interactions avec la fenetre
      *
@@ -226,9 +231,8 @@ public final class MaFenetre extends JFrame implements ActionListener {
                     }
                 }
             });
-            
-            
-            } else if (ae.getSource() == auto) {
+
+        } else if (ae.getSource() == auto) {
             pano.setVisible(false);
             try {
                 choixAffiche();
@@ -254,8 +258,6 @@ public final class MaFenetre extends JFrame implements ActionListener {
                 Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-          
-
             //Gestion du menu
         } else if ((JMenuItem) ae.getSource() == d1Fr) {
             RAZ("France", "d1");
@@ -266,7 +268,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
         } else if ((JMenuItem) ae.getSource() == d2Ang) {
             RAZ("Angleterre", "d2");
         } else if ((JMenuItem) ae.getSource() == eu) {
-            truncateBase("league europa"); 
+            truncateBase("league europa");
         } else if ((JMenuItem) ae.getSource() == cham) {
             truncateBase("champions league");
         } else if ((JMenuItem) ae.getSource() == nouvelleSaison) {
@@ -274,19 +276,24 @@ public final class MaFenetre extends JFrame implements ActionListener {
             this.remove(equipe);
             this.remove(tableauScore);
             ((MonModelTable) tableauScore.getTable().getModel()).removeAll();
-            pano.remove(manu);
-            pano.remove(auto);
-            pano.remove(semiAuto);
-            this.remove(pano);
+            if (manu != null) {
+                pano.remove(manu);
+                pano.remove(auto);
+                pano.remove(semiAuto);
+                this.remove(pano);
+            }
             this.pack();
         }
 
-        }
-        /**
-         * Cette fonction permet de gérer les matchs manuellement en utilisant
-         * la fonction fightManuel de la D1 ou D2 et permet MAJ de la BD via la
-         * fonction fightManuel
-         */
+    }
+
+    
+    
+    /**
+     * Cette fonction permet de gérer les matchs manuellement en utilisant la
+     * fonction fightManuel de la D1 ou D2 et permet MAJ de la BD via la
+     * fonction fightManuel
+     */
     public void gestionManuelleMAJbd() {
         Equipe e1 = null, e2 = null;
 
@@ -334,8 +341,11 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
     /**
-     * initalisation de div1Coupe, div2Coupe et clubCoup
+     * initalisation de div1Coupe, div2Coupe et clubCoup utile pour coupe de la ligue et nationale
+     * mais aussi de div1LCD et div2LCD qui sont utilise pour la ligue des champions et europa
      */
     public void creationDiv() {
         //création des divisions, des clubs nationaux en fonction du pays choisit
@@ -370,6 +380,8 @@ public final class MaFenetre extends JFrame implements ActionListener {
 
     }
 
+    
+    
     /**
      * Affiche le panneau qui contient les choix du championnat et du pays
      *
@@ -403,9 +415,11 @@ public final class MaFenetre extends JFrame implements ActionListener {
         this.pack();
     }
 
+    
+    
     /**
      * Une fonction de génération de matchs automatique sera appelé en fonction
-     * du chmpionnat choisit
+     * du championnat choisit entre D1 et D2
      *
      * @throws SQLException
      */
@@ -419,9 +433,10 @@ public final class MaFenetre extends JFrame implements ActionListener {
         }
     }
 
+    
+    
     /**
-     * génére les matchs automatique de la Coupe de la Ligue et MAJ du tabldcu
-     * des scores
+     * génére les matchs automatique de la Coupe de la Ligue et MAJ du tableau des scores
      *
      * @param pays indique le pays selectionné
      * @throws SQLException
@@ -435,9 +450,10 @@ public final class MaFenetre extends JFrame implements ActionListener {
         affichage_tableau();
     }
 
+    
+    
     /**
-     * génére les matchs automatique de la Coupe Nationale et MAJ du tabldcu des
-     * scores
+     * génére les matchs automatique de la Coupe Nationale et MAJ du tableau des scores
      *
      * @param pays indique le pays selectionné
      * @throws SQLException
@@ -451,6 +467,12 @@ public final class MaFenetre extends JFrame implements ActionListener {
         affichage_tableau();
     }
 
+    
+    
+    /**
+     * génére les matchs automatique de la ligue des Champions et MAJ du tableau des scores
+     * @throws SQLException 
+     */
     public void afficheLDC() throws SQLException {
         ArrayList<Equipe> tmpd1 = new ArrayList<>();
         ArrayList<Equipe> tmpd2 = new ArrayList<>();
@@ -464,27 +486,33 @@ public final class MaFenetre extends JFrame implements ActionListener {
             Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        ldc.faire_8_groupes_de_4();
-        ldc.melange_array(ldc.getListe_LDC());
+        ldc.simulation_LdC();
+//        ldc.faire_8_groupes_de_4();
+//        ldc.melange_array(ldc.getListe_LDC());
+//
+//        for (int i = 0; i < 8; i++) {
+//            ldc.affiche_groupe(i);
+//            System.out.println();
+//            System.out.println();
+//            System.out.println();
+//        }
+//
+//        // ldc.fight(ldc.getListe_LDC().get(0), ldc.getListe_LDC().get(1));
+//        ldc.premiere_phase();
+//        ldc.melange_winner_looser();
+        //System.err.println(ldc.get_gagnant().toString());
 
-        for (int i = 0; i < 8; i++) {
-            ldc.affiche_groupe(i);
-            System.out.println();
-            System.out.println();
-            System.out.println();
-        }
-
-        // ldc.fight(ldc.getListe_LDC().get(0), ldc.getListe_LDC().get(1));
-        ldc.premiere_phase();
-        ldc.melange_winner_looser();
-        System.err.println(ldc.get_gagnant().toString());
-
-        //  affichage_tableau();
+        affichage_tableau();
     }
 
+    
+    /**
+     * énére les matchs automatique de l'Europa Ligue et MAJ du tableau des scores
+     * @throws SQLException 
+     */
     public void afficheEuropa() throws SQLException {
         ArrayList<Equipe> tmpd1 = new ArrayList<>();
-       // ArrayList<Equipe> tmpd2 = new ArrayList<>();
+        // ArrayList<Equipe> tmpd2 = new ArrayList<>();
         Europa europa = null;
         for (int i = 0; i < 32; i++) {
             tmpd1.add(div1LDC.getDivision1().get(i));
@@ -495,22 +523,24 @@ public final class MaFenetre extends JFrame implements ActionListener {
             Logger.getLogger(MaFenetre.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        europa.faire_8_groupes_de_4();
-        europa.melange_array(europa.getListe_Europa());
+        
+        europa.simulation_Europa();
+//        
+//        melange_array(europa.getListe_Europa());
+//
+//        for (int i = 0; i < 8; i++) {
+//            europa.affiche_groupe(i);
+//            System.out.println();
+//            System.out.println();
+//            System.out.println();
+//        }
+//
+//        // ldc.fight(ldc.getListe_LDC().get(0), ldc.getListe_LDC().get(1));
+//        europa.premiere_phase();
+//        europa.melange_winner_looser();
+//        System.err.println(europa.get_gagnant().toString());
 
-        for (int i = 0; i < 8; i++) {
-            europa.affiche_groupe(i);
-            System.out.println();
-            System.out.println();
-            System.out.println();
-        }
-
-        // ldc.fight(ldc.getListe_LDC().get(0), ldc.getListe_LDC().get(1));
-        europa.premiere_phase();
-        europa.melange_winner_looser();
-        System.err.println(europa.get_gagnant().toString());
-
-        //  affichage_tableau();
+          affichage_tableau();
     }
 
     /**
@@ -582,10 +612,10 @@ public final class MaFenetre extends JFrame implements ActionListener {
         add(equipe, BorderLayout.CENTER);
         equipe.getValiderEquipe().addActionListener(this);
 
-//        //On supprime les données des tabldcux
+//        //On supprime les données des tabeaux
         ((MonModelTable) tableauScore.getTable().getModel()).removeAll();
 
-        //On modifie les données des tabldcux et on les ré-affiche en fonction de la division choisie
+        //On modifie les données des tableaux et on les ré-affiche en fonction de la division choisie
         if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
             for (int i = 0; i < equipe.getDivision1().getDivision1().size(); i++) {
                 ((MonModelTable) tableauScore.getTable().getModel()).addLigne(equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
@@ -603,8 +633,9 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
+    
     /**
-     *
+     * Permet d'affihcer les tableaux des scores en focntion des championnats
      * @throws SQLException
      */
     public void affichage_tableau() throws SQLException {
@@ -622,7 +653,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
                         equipe.getDivision1().fight(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision1().getDivision1().get(equipe.getEquipe2().getSelectedIndex() - 1));
 
                     }
-                    //MAJ des données des tabldcux suite au fight
+                    //MAJ des données des tableaux suite au fight
                     for (int i = 0; i < equipe.getDivision1().getDivision1().size(); i++) {
                         ((MonModelTable) tableauScore.getTable().getModel()).setLigne(i, equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
                     }
@@ -635,7 +666,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
                     }
 
                 }
-                //MAJ de l'affichage du tabldcu
+                //MAJ de l'affichage du tableau
                 tableauScore.update();
                 add(tableauScore, BorderLayout.SOUTH);
                 break;
@@ -645,7 +676,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
                     if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
                         equipe.getDivision2().fight(equipe.getDivision2().getDivision2().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision2().getDivision2().get(equipe.getEquipe2().getSelectedIndex() - 1));
                     }
-                    //MAJ des données des tabldcux suite au fight
+                    //MAJ des données des tableaux suite au fight
                     for (int i = 0; i < equipe.getDivision2().getDivision2().size(); i++) {
                         ((MonModelTable) tableauScore.getTable().getModel()).setLigne(i, equipe.getDivision2().getDivision2().get(i).getNom(), Integer.toString(equipe.getDivision2().getDivision2().get(i).getClassement()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getPts()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getJ()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getG()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getN()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBC()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getDiff()));
                     }
@@ -657,7 +688,7 @@ public final class MaFenetre extends JFrame implements ActionListener {
                         ((MonModelTable) tableauScore.getTable().getModel()).addLigne(div2Coupe.getDivision2().get(i).getNom(), Integer.toString(div2Coupe.getDivision2().get(i).getClassement()), Integer.toString(div2Coupe.getDivision2().get(i).getPts()), Integer.toString(div2Coupe.getDivision2().get(i).getJ()), Integer.toString(div2Coupe.getDivision2().get(i).getG()), Integer.toString(div2Coupe.getDivision2().get(i).getN()), Integer.toString(div2Coupe.getDivision2().get(i).getP()), Integer.toString(div2Coupe.getDivision2().get(i).getBP()), Integer.toString(div2Coupe.getDivision2().get(i).getBC()), Integer.toString(div2Coupe.getDivision2().get(i).getDiff()));
                     }
                 }
-                //MAJ de l'affichage du tabldcu
+                //MAJ de l'affichage du tableau
                 tableauScore.update();
                 add(tableauScore, BorderLayout.SOUTH);
 
@@ -736,54 +767,11 @@ public final class MaFenetre extends JFrame implements ActionListener {
                 break;
 
         }
-        /*
-         if (choix.getChoixChampionnat().getSelectedItem().equals("D1")) {
-
-         System.err.println("E1 : " + (String) equipe.getEquipe1().getSelectedItem());
-
-         System.err.println("E2 : " + (String) equipe.getEquipe2().getSelectedItem());
-         if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
-         // equipe.getDivision1().fight(r.getEquipeByName((String) equipe.getEquipe1().getSelectedItem(),"d1"), r.getEquipeByName((String) equipe.getEquipe2().getSelectedItem(),"d1"));
-
-         equipe.getDivision1().fight(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision1().getDivision1().get(equipe.getEquipe2().getSelectedIndex() - 1));
-         //MAJ de l'arrayList des equipes suite au classement de la BD
-         //                ArrayList<Equipe> tmp = r.Classement(equipe.getDivision1().getDivision1().get(equipe.getEquipe1().getSelectedIndex() - 1).getPays(), "d1");
-         //                equipe.getDivision1().getDivision1().cldcr();
-         //                equipe.getDivision1().getDivision1().addAll(tmp);
-         //                equipe.update();
-
-         }
-
-         //MAJ des données des tabldcux suite au fight
-         for (int i = 0; i < equipe.getDivision1().getDivision1().size(); i++) {
-         ((MonModelTable) tableauScoreD1.getTable().getModel()).setLigne(i, equipe.getDivision1().getDivision1().get(i).getNom(), Integer.toString(equipe.getDivision1().getDivision1().get(i).getClassement()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getPts()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getJ()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getG()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getN()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBP()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getBC()), Integer.toString(equipe.getDivision1().getDivision1().get(i).getDiff()));
-         }
-         //MAJ de l'affichage du tabldcu
-         tableauScoreD1.update();
-         add(tableauScoreD1, BorderLayout.SOUTH);
-
-         } else if (choix.getChoixChampionnat().getSelectedItem().equals("D2")) {
-         if (equipe.getEquipe1().getSelectedIndex() != 0 && equipe.getEquipe2().getSelectedIndex() != 0) {
-         equipe.getDivision2().fight(equipe.getDivision2().getDivision2().get(equipe.getEquipe1().getSelectedIndex() - 1), equipe.getDivision2().getDivision2().get(equipe.getEquipe2().getSelectedIndex() - 1));
-
-         //MAJ de l'arrayList des equipes suite au classement de la BD
-         //                ArrayList<Equipe> tmp = r.Classement(equipe.getDivision2().getDivision2().get(equipe.getEquipe1().getSelectedIndex() - 1).getPays(), "d2");
-         //                equipe.getDivision2().getDivision2().cldcr();
-         //                equipe.getDivision2().getDivision2().addAll(tmp);
-         }
-
-         //MAJ des données des tabldcux suite au fight
-         for (int i = 0; i < equipe.getDivision2().getDivision2().size(); i++) {
-         ((MonModelTable) tableauScoreD2.getTable().getModel()).setLigne(i, equipe.getDivision2().getDivision2().get(i).getNom(), Integer.toString(equipe.getDivision2().getDivision2().get(i).getClassement()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getPts()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getJ()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getG()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getN()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBP()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getBC()), Integer.toString(equipe.getDivision2().getDivision2().get(i).getDiff()));
-         }
-         tableauScoreD2.update();
-         add(tableauScoreD2, BorderLayout.SOUTH);
-         }
-         */
-
         pack();
     }
 
+    
+    
     /**
      * Permet la remise à zero des buts, nb de parties jouées ... de la base de
      * données pour un pays et un chmapionnat
@@ -812,6 +800,8 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
 
     }
+    
+    
 
     /**
      * Permet la remise à zero des buts, nb de parties jouées ... de la base de
@@ -829,6 +819,8 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
+    
+    
     /**
      * Permet de vider les bases en fonction du championnat selectionné
      *
@@ -846,6 +838,8 @@ public final class MaFenetre extends JFrame implements ActionListener {
         pack();
     }
 
+    
+    
     /**
      * Pour modifier le thème
      */

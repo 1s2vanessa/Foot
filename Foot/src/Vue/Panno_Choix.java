@@ -17,6 +17,7 @@ import javax.swing.border.TitledBorder;
 /**
  *
  * @author Vanessa
+ * Classe créeant un panneau qui affiche des comboBox pour choisir un pays et un championnat
  */
 public class Panno_Choix extends JPanel {
 
@@ -24,12 +25,18 @@ public class Panno_Choix extends JPanel {
     private JButton validerChoix;
  
 
+    /**
+     * Constructeur de la classe
+     */
     public Panno_Choix() {
         this.setBorder(new TitledBorder("Championnat"));
         this.setSize(new Dimension(400, 100));
         init();
     }
-
+    
+    /**
+     * Permet d'initaliser les élements du panneau
+     */
     public void init() {
 
         JLabel label = new JLabel("Choisir une pays: ");
@@ -77,15 +84,26 @@ public class Panno_Choix extends JPanel {
     }
 
    
-
+/**
+ * retourne le pays qui est selectionné dans la combo
+ * @return pays
+ */
     public JComboBox getPays() {
         return pays;
     }
 
+    /**
+ * retourne le championnat qui est selectionné dans la combo
+ * @return championnat
+ */
     public JComboBox getChoixChampionnat() {
         return choixChampionnat;
     }
 
+    /**
+     * retourne le bouton pour qu'il puisse être gérer dans MaFenetre
+     * @return le bouton valider
+     */
     public JButton getValiderChoix() {
         return validerChoix;
     }

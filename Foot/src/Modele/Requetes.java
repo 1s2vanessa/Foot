@@ -33,7 +33,7 @@ public class Requetes {
 
     public ArrayList<Equipe> getEquipeByChampionnat(String championnat) throws SQLException {
 
-        String cmd = "SELECT DISTINCT * FROM `" + championnat + "` ORDER BY Classement";
+        String cmd = "SELECT DISTINCT * FROM `" + championnat + "` ORDER BY J DESC,Pts DESC, Classement";
         ResultSet rs = data.link.executeQuery(cmd);
         ArrayList list = new ArrayList();
         while (rs.next()) {
@@ -171,7 +171,7 @@ public class Requetes {
             // System.err.println(j);
         }
         
-        JOptionPane.showMessageDialog(null, "Fin de vidage table : "+championnat+" pour : "+pays, "Message", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Fin de RAZ table : "+championnat+" pour : "+pays, "Message", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
@@ -232,13 +232,13 @@ public class Requetes {
          cmd = "TRUNCATE TABLE `europa league`";
         data.link.executeUpdate(cmd);
         
-        JOptionPane.showMessageDialog(null, "Fin de nettoyage des tables", "Message", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Fin de nettoyage de toutes les tables", "Message", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
     public ArrayList<Equipe> dernieresEquipeD1(String pays) throws SQLException {
         ArrayList<Equipe> lastEquipe = new ArrayList<>();
-        String selection = "SELECT * FROM d1 where Pays ='" + pays + "' AND Classement > '17' ORDER BY Classement";
+        String selection = "SELECT * FROM d1 where Pays ='" + pays + "' AND Classement > '17' ORDER BY Classement ";
         ResultSet rs = data.link.executeQuery(selection);
         int i = 18;
         int j = 0;
@@ -381,5 +381,42 @@ public class Requetes {
 
         }
         return list;
+    }
+    
+    
+     public void classer_array_LDC(ArrayList<Equipe> a) throws SQLException { // Requête à tester // Fonction à utiliser avec les 8 groupes de la LDC
+        ArrayList<Equipe> lastEquipe = new ArrayList<>();
+        String selection = "SELECT * FROM `champions league` where Nom_Equipe like '"+a.get(0).getNom()+"' OR Nom_Equipe like '"+a.get(1).getNom()+"' OR Nom_Equipe like '"+a.get(2).getNom()+"' OR Nom_Equipe like '"+a.get(3).getNom()+"' ORDER BY Classement"; // Requete à tester
+        ResultSet rs = data.link.executeQuery(selection);
+        int i = 18;
+        int j = 0;
+        while (rs.next()) {
+            
+            lastEquipe.add(new Equipe(i, rs.getString("Nom_Equipe"), rs.getInt("Pts"), rs.getInt("J"), rs.getInt("G"), rs.getInt("N"), rs.getInt("P"), rs.getInt("BP"), rs.getInt("BC"), rs.getInt("Diff"), rs.getString("Pays"), "champions league"));
+            System.err.println(lastEquipe.get(j).toString());
+            j++;
+            i++;
+        }
+        a=lastEquipe;
+        
+    }
+
+     
+        
+     public void classer_array_Europa(ArrayList<Equipe> a) throws SQLException { // Requête à tester // Fonction à utiliser avec les 8 groupes de la LDC
+        ArrayList<Equipe> lastEquipe = new ArrayList<>();
+        String selection = "SELECT * FROM `europa league` where Nom_Equipe like '"+a.get(0).getNom()+"' OR Nom_Equipe like '"+a.get(1).getNom()+"' OR Nom_Equipe like '"+a.get(2).getNom()+"' OR Nom_Equipe like '"+a.get(3).getNom()+"' ORDER BY Classement"; // Requete à tester
+        ResultSet rs = data.link.executeQuery(selection);
+        int i = 18;
+        int j = 0;
+        while (rs.next()) {
+            
+            lastEquipe.add(new Equipe(i, rs.getString("Nom_Equipe"), rs.getInt("Pts"), rs.getInt("J"), rs.getInt("G"), rs.getInt("N"), rs.getInt("P"), rs.getInt("BP"), rs.getInt("BC"), rs.getInt("Diff"), rs.getString("Pays"), "champions league"));
+            System.err.println(lastEquipe.get(j).toString());
+            j++;
+            i++;
+        }
+        a=lastEquipe;
+        
     }
 }

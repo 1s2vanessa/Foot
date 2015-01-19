@@ -8,11 +8,11 @@
 /**
  *
  * @author farida.ouali
+ * Permet de créer un liste d'équipe qui constitue une liste de clubs nationaux
  */
 
 package Modele;
 
-import Vue.Observateur;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -24,6 +24,10 @@ public class ClubNational implements fight{
     private Requetes r;
     private Equipe barrage1, barrage2;
 
+    /**
+     * Constructeur de la classe
+     * @throws SQLException 
+     */
     public ClubNational() throws SQLException {
           //  data= new BD();
         club = new ArrayList<>();
